@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Torch the Storch - Black Hole</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f4f4f4;
+}
+
+h1 {
+    color: #c1121f;
+}
+
+#controls {
+    margin-bottom: 15px;
+}
+
+#board {
+    width: 700px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+}
+
+.cell {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid red;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+}
+
+.player {
+    background: #1976d2;
+    color: white;
+}
+
+.computer {
+    background: #d62828;
+    color: white;
+}
+
+.blackhole {
+    background: black !important;
+    border: 4px solid gold !important;
+    color: gold;
+}
+
+.highlight {
+    box-shadow: 0 0 18px lime;
+}
+
+#status {
+    font-size: 22px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-top: 10px;
+}
+</style>
+</head>
+<body>
+
+<h1>🔥 TORCH THE STORCH 🔥</h1>
+
+<div id="controls">
+    Difficulty:
+    <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+    </select>
+</div>
+
+<p>
+Your next number:
+<span id="nextNum">1</span>
+</p>
+
+<div id="board"></div>
+
+<div id="status">
+Click an empty circle.
+</div>
+
+<button onclick="location.reload()">
+New Game
+</button>
+
+<script>
+
+const adjacency = {
+
+0:[1,2],
+1:[0,2,3,4],
+2:[0,1,4,5],
+
+3:[1,4,6,7],
+4:[1,2,3,5,7,8],
+5:[2,4,8,9],
+
+6:[3,7,10,11],
+7:[3,4,6,8,11,12],
+8:[4,5,7,9,12,13],
+9:[5,8,13,14],
+
+10:[6,11,15,16],
+11:[6,7,10,12,16,17],
+12:[7,8,11,13,17,18],
+13:[8,9,12,14,18,19],
+14:[9,13,19,20],
+
+15:[10,16],
+16:[10,11,15,17],
+17:[11,12,16,18],
+18:[12,13,17,19],
+19:[13,14,18,20],
+20:[14,19]
+
+};
+
+const board = document.getElementById("board");
+
+const rowCounts = [1,2,3,4,5,6];
+const state = [];
+
+let playerNumber = 1;
+let computerNumber = 1;
+let gameOver = false;
+
+let id = 0;
+
+for(let r=0; r<rowCounts.length; r++){
+
+    const rowDiv = document.createElement("div");
+    rowDiv.className = "row";
+
+    for(let c=0; c<rowCounts[r]; c++){
+
+        const cell = document.createElement("div");
+
+        cell.className = "cell";
+        cell.dataset.id = id;
+
+        cell.addEventListener(
+            "click",
+            playerMove
+        );
+
+        rowDiv.appendChild(cell);
+
+        state.push(null);
+
+        id++;
+    }
+
+    board.appendChild(rowDiv);
+}
+
+function playerMove(){
+
+    if(gameOver) return;
+
+    const index =
+        Number(this.dataset.id);
+
+    if(state[index] !== null) return;
+
+    state[index] = {
+        owner:"player",
+        value:playerNumber
+    };
+
+    this.classList.add("player");
+    this.textContent = playerNumber;
+
+    playerNumber++;
+
+    document.getElementById("nextNum")
+        .textContent =
+        playerNumber <= 10
+        ? playerNumber
+        : "Done";
+
+    setTimeout(computerMove,300);
+}
+
+function computerMove(){
+
+    if(computerNumber > 10){
+        checkGameEnd();
+        return;
+    }
+
+    let move;
+
+    const difficulty =
+        document.getElementById(
+            "difficulty"
+        ).value;
+
+    if(difficulty === "easy"){
+        move = randomMove();
+    }
+    else{
+        move = mediumMove();
+    }
+
+    state[move] = {
+        owner:"computer",
+        value:computerNumber
+    };
+
+    const cell =
+        document.querySelector(
+            '[data-id="' + move + '"]'
+        );
+
+    cell.classList.add("computer");
+    cell.textContent = computerNumber;
+
+    computerNumber++;
+
+    checkGameEnd();
+}
+
+function randomMove(){
+
+    const open = [];
+
+    state.forEach((s,i)=>{
+        if(s === null){
+            open.push(i);
+        }
+    });
+
+    return open[
+        Math.floor(
+            Math.random() * open.length
+        )
+    ];
+}
+
+function mediumMove(){
+
+    const open = [];
+
+    state.forEach((s,i)=>{
+        if(s === null){
+            open.push(i);
+        }
+    });
+
+    let bestMove = open[0];
+    let bestScore = -999;
+
+    open.forEach(move=>{
+
+        let score = 0;
+
+        adjacency[move].forEach(n=>{
+
+            if(
+                state[n] &&
+                state[n].owner === "computer"
+            ){
+                score++;
+            }
+
+            if(
+                state[n] &&
+                state[n].owner === "player"
+            ){
+                score--;
+            }
+
+        });
+
+        if(score > bestScore){
+            bestScore = score;
+            bestMove = move;
+        }
+
+    });
+
+    return bestMove;
+}
+
+function checkGameEnd(){
+
+    const filled =
+        state.filter(
+            x => x !== null
+        ).length;
+
+    if(filled === 20){
+        endGame();
+    }
+}
+
+function getNeighbors(index){
+    return adjacency[index];
+}
+
+function endGame(){
+
+    gameOver = true;
+
+    const hole =
+        state.findIndex(
+            x => x === null
+        );
+
+    const holeCell =
+        document.querySelector(
+            '[data-id="' + hole + '"]'
+        );
+
+    holeCell.classList.add(
+        "blackhole"
+    );
+
+    holeCell.textContent = "🔥";
+
+    let playerScore = 0;
+    let computerScore = 0;
+
+    getNeighbors(hole).forEach(i=>{
+
+        const cell =
+            document.querySelector(
+                '[data-id="' + i + '"]'
+            );
+
+        cell.classList.add(
+            "highlight"
+        );
+
+        if(!state[i]) return;
+
+        if(
+            state[i].owner === "player"
+        ){
+            playerScore += state[i].value;
+        }
+        else{
+            computerScore += state[i].value;
+        }
+
+    });
+
+    let result;
+
+    if(playerScore < computerScore){
+
+       result =
+       "🏆 YOU TORCHED THE STORCH!";
+
+    }
+    else if(
+        playerScore > computerScore
+    ){
+
+       result =
+       "🔥 THE STORCH SURVIVED!";
+
+    }
+    else{
+
+       result =
+       "🤝 EPIC TORCH-OFF!";
+    }
+
+    document.getElementById(
+        "status"
+    ).innerHTML =
+
+        result +
+
+        "<br><br>Your Score: " +
+        playerScore +
+
+        "<br>Computer Score: " +
+        computerScore;
+}
+
+</script>
+
+</body>
+</html>
