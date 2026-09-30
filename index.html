@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>Torch the Storch</title>
 
 <style>
 
 :root{
-    --blue:#27a5ff;
-    --orange:#ff9d00;
+
+    --blue:#29a8ff;
+
+    --orange:#ff9800;
+
     --gold:#ffd54f;
-    --dark:#111;
 }
 
 *{
@@ -20,212 +27,289 @@
 }
 
 body{
+
     margin:0;
-    background:
-        radial-gradient(circle at center,#333 0%,#111 60%,#000 100%);
+
     font-family:Arial,Helvetica,sans-serif;
-    color:white;
+
     text-align:center;
+
+    color:white;
+
+    background:
+    radial-gradient(
+        circle,
+        #333 0%,
+        #111 60%,
+        #000 100%
+    );
 }
 
 #container{
+
     max-width:1200px;
+
     margin:auto;
+
     padding:15px;
 }
 
+/* BANNER */
+
 #banner{
+
     width:100%;
+
     max-width:950px;
+
     border:4px solid orange;
+
     border-radius:12px;
+
     box-shadow:0 0 25px orange;
+
+    margin-bottom:15px;
 }
 
 h1{
-    margin:10px 0;
+
+    margin:8px 0;
 }
 
 .controls{
+
     display:flex;
+
     justify-content:center;
-    flex-wrap:wrap;
+
     gap:10px;
+
+    flex-wrap:wrap;
+
     margin:15px 0;
 }
 
 button,
 select{
+
     border:none;
+
     border-radius:8px;
-    padding:12px 20px;
-    font-weight:bold;
-    cursor:pointer;
+
+    padding:12px 18px;
+
     font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
 }
 
 #newGame{
+
     background:#ff5722;
+
     color:white;
 }
 
 #musicBtn{
+
     background:#2196f3;
+
     color:white;
 }
 
 #status{
+
     margin:15px;
+
     min-height:32px;
-    font-size:24px;
+
     color:gold;
+
+    font-size:24px;
+
     font-weight:bold;
 }
 
 #scoreBoard{
+
     display:flex;
+
     justify-content:center;
+
     gap:50px;
+
+    margin-bottom:20px;
+
     font-size:22px;
-    margin-bottom:15px;
 }
 
 .playerScore{
+
     color:var(--blue);
+
     font-weight:bold;
 }
 
 .compScore{
+
     color:var(--orange);
+
     font-weight:bold;
 }
 
 #board{
+
     display:flex;
+
     flex-direction:column;
+
     align-items:center;
+
     gap:10px;
-    margin-top:15px;
+
+    margin-top:10px;
 }
 
 .row{
+
     display:flex;
+
     gap:10px;
 }
 
 .cell{
+
     width:68px;
+
     height:68px;
 
     border-radius:50%;
 
+    border:3px solid orange;
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
+    font-size:24px;
+
+    font-weight:bold;
 
     cursor:pointer;
 
-    font-size:24px;
-    font-weight:bold;
-
-    border:3px solid orange;
+    user-select:none;
 
     background:
-        radial-gradient(circle,#555,#111);
+    radial-gradient(
+        circle,
+        #555,
+        #111
+    );
 
     transition:.2s;
-
-    user-select:none;
 }
 
 .cell:hover{
+
     transform:scale(1.08);
-    box-shadow:0 0 20px orange;
 }
 
 .player{
-    background:#07294c;
+
+    background:#082742;
+
     color:var(--blue);
 }
 
 .computer{
-    background:#432100;
+
+    background:#442100;
+
     color:var(--orange);
 }
 
 .blackhole{
+
     background:black;
+
     color:red;
+
     border-color:red;
-    animation:pulse .9s infinite;
 }
 
 .destroyed{
-    opacity:.20;
-}
 
-@keyframes pulse{
-
-    0%{
-        transform:scale(1);
-    }
-
-    50%{
-        transform:scale(1.18);
-    }
-
-    100%{
-        transform:scale(1);
-    }
+    opacity:.25;
 }
 
 #result{
+
     margin-top:20px;
+
     min-height:40px;
+
     font-size:30px;
+
     font-weight:bold;
 }
 
 #confetti{
+
     position:fixed;
+
     inset:0;
-    overflow:hidden;
+
     pointer-events:none;
+
+    overflow:hidden;
 }
 
 .piece{
+
     position:absolute;
+
     width:10px;
+
     height:10px;
+
     animation:fall 3s linear forwards;
 }
 
 @keyframes fall{
 
     from{
+
         transform:
-            translateY(-40px)
-            rotate(0deg);
+        translateY(-50px)
+        rotate(0deg);
     }
 
     to{
+
         transform:
-            translateY(110vh)
-            rotate(720deg);
+        translateY(110vh)
+        rotate(720deg);
     }
 }
 
 .instructions{
-    max-width:900px;
-    margin:20px auto;
-    text-align:left;
-    background:rgba(255,255,255,.08);
-    padding:15px;
-    border-radius:10px;
-}
 
-.instructions li{
-    margin:8px 0;
+    max-width:900px;
+
+    margin:20px auto;
+
+    text-align:left;
+
+    background:
+    rgba(255,255,255,.08);
+
+    padding:15px;
+
+    border-radius:10px;
 }
 
 @media(max-width:700px){
@@ -233,266 +317,39 @@ select{
     .cell{
 
         width:50px;
+
         height:50px;
-        font-size:18px;
-    }
 
-    #scoreBoard{
-
-        flex-direction:column;
-        gap:10px;
-    }
-}
-
-</style>
-</head>
-
-<body>
-
-<div id="confetti"></div>
-
-<div id="container">
-
-<img
-    id="banner"
-    src="banner.png"
-    alt="Torch the Storch">
-
-<h1>🔥 TORCH THE STORCH 🔥</h1>
-
-<div class="controls">
-
-<button id="newGame">
-New Game
-</button>
-
-<button id="musicBtn">
-▶ Music
-</button>
-
-<select id="difficulty">
-
-<option value="easy">
-Easy
-</option>
-
-<option value="medium">
-Medium
-</option>
-
-<option value="hard">
-Hard
-</option>
-
-<option value="torch">
-Torch Mode
-</option>
-
-</select>
-
-</div>
-
-<div id="status">
-Press New Game
-</div>
-
-<div id="scoreBoard">
-
-<div class="playerScore">
-Player:
-<span id="playerScore">
-0
-</span>
-</div>
-
-<div class="compScore">
-Computer:
-<span id="computerScore">
-0
-</span>
-</div>
-
-</div>
-
-<div id="board"></div>
-
-<div id="result"></div>
-
-<div class="instructions">
-
-<ol>
-<li>Take turns choosing spaces.</li>
-<li>Numbers 1–20 are placed automatically.</li>
-<li>The final open space becomes the Black Hole.</li>
-<li>Adjacent numbers are destroyed.</li>
-<li>Highest remaining score wins.</li>
-</ol>
-
-</div>
-
-<audio
-    id="bgMusic"
-    src="Torch-the-Storch.mp3"
-    preload="auto">
-</audio>
-
-<script>
-
-const GAME={
-
-    spaces:{},
-
-    currentNumber:1,
-
-    gameActive:false,
-
-    playerTurn:true,
-
-    difficulty:"easy",
-
-    playerScore:0,
-
-    computerScore:0
-};
-
-const board =
-    document.getElementById("board");
-
-const statusText =
-    document.getElementById("status");
-
-const result =
-    document.getElementById("result");
-
-const playerScoreSpan =
-    document.getElementById("playerScore");
-
-const computerScoreSpan =
-    document.getElementById("computerScore");
-
-const music =
-    document.getElementById("bgMusic");
-
-const rows=[1,2,3,4,5,6];
-
-const adjacency={
-
-1:[2,3],
-
-2:[1,3,4,5],
-3:[1,2,5,6],
-
-4:[2,5,7,8],
-5:[2,3,4,6,8,9],
-6:[3,5,9,10],
-
-7:[4,8,11,12],
-8:[4,5,7,9,12,13],
-9:[5,6,8,10,13,14],
-10:[6,9,14,15],
-
-11:[7,12,16,17],
-12:[7,8,11,13,17,18],
-13:[8,9,12,14,18,19],
-14:[9,10,13,15,19,20],
-15:[10,14,20,21],
-
-16:[11,17],
-17:[11,12,16,18],
-18:[12,13,17,19],
-19:[13,14,18,20],
-20:[14,15,19,21],
-21:[15,20]
-
-};
-
-function createBoard(){
-
-    board.innerHTML="";
-
-    GAME.spaces={};
-
-    let id=1;
-
-    for(let r=0;r<rows.length;r++){
-
-        const row =
-            document.createElement("div");
-
-        row.className="row";
-
-        for(let c=0;c<rows[r];c++){
-
-            const cell =
-                document.createElement("div");
-
-            cell.className="cell";
-
-            const currentId=id;
-
-            GAME.spaces[currentId]={
-
-                id:currentId,
-
-                owner:null,
-
-                number:null,
-
-                cell:cell
-            };
-
-            cell.addEventListener(
-                "click",
-                ()=>playerMove(currentId)
-            );
-
-            row.appendChild(cell);
-
-            id++;
-        }
-
-        board.appendChild(row);
-    }
-}
-
-   function startGame(){
+function startGame(){
 
     createBoard();
 
     GAME.currentNumber=1;
 
-    GAME.playerScore=0;
-    GAME.computerScore=0;
+    GAME.playerDamage=0;
+    GAME.computerDamage=0;
 
     GAME.gameActive=true;
 
+    GAME.playerTurn=true;
+
     GAME.difficulty=
-        document.getElementById("difficulty").value;
+    document.getElementById(
+        "difficulty"
+    ).value;
 
     result.textContent="";
 
     playerScoreSpan.textContent="0";
     computerScoreSpan.textContent="0";
 
-    GAME.playerTurn=Math.random()<0.5;
-
     statusText.textContent=
-        GAME.playerTurn
-        ? "Your Turn!"
-        : "Computer Starts!";
+    "Your Turn!";
 
     music.pause();
     music.currentTime=0;
 
     music.play().catch(()=>{});
-
-    if(!GAME.playerTurn){
-
-        setTimeout(
-            computerMove,
-            900
-        );
-    }
 }
 
 function emptySpaces(){
@@ -518,7 +375,7 @@ function playerMove(id){
     if(!GAME.playerTurn) return;
 
     const space=
-        GAME.spaces[id];
+    GAME.spaces[id];
 
     if(!space) return;
 
@@ -536,15 +393,16 @@ function claimSpace(
 ){
 
     const space=
-        GAME.spaces[id];
+    GAME.spaces[id];
 
-    space.owner=owner;
+    space.owner=
+    owner;
 
     space.number=
-        GAME.currentNumber;
+    GAME.currentNumber;
 
     space.cell.textContent=
-        GAME.currentNumber;
+    GAME.currentNumber;
 
     space.cell.classList.add(
         owner
@@ -557,29 +415,37 @@ function claimSpace(
     if(
         GAME.currentNumber>20
     ){
+
         finishGame();
+
         return;
     }
 
     GAME.playerTurn=
-        !GAME.playerTurn;
+    !GAME.playerTurn;
 
     statusText.textContent=
-        GAME.playerTurn
-        ? "Your Turn!"
-        : "Computer Thinking...";
+
+    GAME.playerTurn
+    ? "Your Turn!"
+    : "Computer Thinking...";
 
     if(
         !GAME.playerTurn
     ){
 
-        const thinkTime=
-            700+
-            Math.random()*600;
+        const delay=
+
+        700+
+
+        Math.random()*600;
 
         setTimeout(
+
             computerMove,
-            thinkTime
+
+            delay
+
         );
     }
 }
@@ -629,13 +495,12 @@ function computerMove(){
     );
 }
 
-
 /* EASY AI */
 
 function easyMove(){
 
     const open=
-        emptySpaces();
+    emptySpaces();
 
     return open[
         Math.floor(
@@ -645,15 +510,15 @@ function easyMove(){
     ];
 }
 
-
 /* MEDIUM AI */
 
 function mediumMove(){
 
     const open=
-        emptySpaces();
+    emptySpaces();
 
     let best=open[0];
+
     let bestScore=-999;
 
     for(
@@ -662,31 +527,35 @@ function mediumMove(){
     ){
 
         const score=
-            adjacency[spot]
-            .length;
+
+        adjacency[spot]
+        .length;
 
         if(
             score>
             bestScore
         ){
 
-            best=spot;
-            bestScore=score;
+            bestScore=
+            score;
+
+            best=
+            spot;
         }
     }
 
     return best;
 }
 
-
 /* HARD AI */
 
 function hardMove(){
 
     const open=
-        emptySpaces();
+    emptySpaces();
 
     let best=open[0];
+
     let bestScore=-99999;
 
     for(
@@ -697,21 +566,27 @@ function hardMove(){
         let score=0;
 
         score+=
-            adjacency[spot]
-            .length*4;
+        adjacency[spot]
+        .length*4;
 
-        if([
-            5,8,9,
-            12,13,14,
-            18,19
-        ].includes(spot))
-        {
+        if(
+            [
+                5,8,9,
+                12,13,14,
+                18,19
+            ]
+            .includes(
+                spot
+            )
+        ){
+
             score+=20;
         }
 
         if(
             spot===13
         ){
+
             score+=25;
         }
 
@@ -721,25 +596,25 @@ function hardMove(){
         ){
 
             bestScore=
-                score;
+            score;
 
             best=
-                spot;
+            spot;
         }
     }
 
     return best;
 }
 
-
 /* TORCH MODE AI */
 
 function torchMove(){
 
     const open=
-        emptySpaces();
+    emptySpaces();
 
     let best=open[0];
+
     let bestScore=-999999;
 
     for(
@@ -749,9 +624,9 @@ function torchMove(){
 
         let score=0;
 
-        score +=
-            adjacency[spot]
-            .length*10;
+        score+=
+        adjacency[spot]
+        .length*10;
 
         for(
             const neighbor
@@ -759,9 +634,9 @@ function torchMove(){
         ){
 
             const n=
-                GAME.spaces[
-                    neighbor
-                ];
+            GAME.spaces[
+                neighbor
+            ];
 
             if(
                 n.owner===
@@ -769,7 +644,7 @@ function torchMove(){
             ){
 
                 score+=
-                    n.number*6;
+                n.number*6;
             }
 
             if(
@@ -778,13 +653,14 @@ function torchMove(){
             ){
 
                 score-=
-                    n.number*4;
+                n.number*4;
             }
         }
 
         if(
             spot===13
         ){
+
             score+=35;
         }
 
@@ -794,18 +670,17 @@ function torchMove(){
         ){
 
             bestScore=
-                score;
+            score;
 
             best=
-                spot;
+            spot;
         }
     }
 
     return best;
 }
 
-
-/* BROWSER SOUND ENGINE */
+/* SOUND ENGINE */
 
 function beep(
     frequency,
@@ -819,10 +694,10 @@ function beep(
     )();
 
     const osc=
-        ctx.createOscillator();
+    ctx.createOscillator();
 
     const gain=
-        ctx.createGain();
+    ctx.createGain();
 
     osc.connect(gain);
 
@@ -831,7 +706,7 @@ function beep(
     );
 
     osc.frequency.value=
-        frequency;
+    frequency;
 
     osc.type="sine";
 
@@ -884,13 +759,15 @@ function playLoseSound(){
     beep(300,250);
 
     setTimeout(
-        ()=>beep(170,450),
-        200
+        ()=>beep(170,500),
+        250
     );
 }
 
 document
-.getElementById("musicBtn")
+.getElementById(
+    "musicBtn"
+)
 .addEventListener(
     "click",
     ()=>{
@@ -901,7 +778,6 @@ document
 
             music.play()
             .catch(()=>{});
-
         }
         else{
 
@@ -911,7 +787,9 @@ document
 );
 
 document
-.getElementById("newGame")
+.getElementById(
+    "newGame"
+)
 .addEventListener(
     "click",
     startGame
@@ -922,15 +800,15 @@ function finishGame(){
     GAME.gameActive=false;
 
     const open=
-        emptySpaces();
+    emptySpaces();
 
     const blackHole=
-        open[0];
+    open[0];
 
     const holeCell=
-        GAME.spaces[
-            blackHole
-        ].cell;
+    GAME.spaces[
+        blackHole
+    ].cell;
 
     holeCell.classList.add(
         "blackhole"
@@ -939,7 +817,7 @@ function finishGame(){
     holeCell.textContent="🕳";
 
     statusText.textContent=
-        "BLACK HOLE ACTIVATED!";
+    "BLACK HOLE ACTIVATED!";
 
     playBlackHoleSound();
 
@@ -959,12 +837,13 @@ function scoreGame(
 ){
 
     const destroyed=
-        adjacency[
-            blackHole
-        ];
+    adjacency[
+        blackHole
+    ];
 
-    let playerScore=0;
-    let computerScore=0;
+    let playerDamage=0;
+
+    let computerDamage=0;
 
     for(
         let i=1;
@@ -979,7 +858,7 @@ function scoreGame(
         }
 
         const spot=
-            GAME.spaces[i];
+        GAME.spaces[i];
 
         if(
             destroyed.includes(i)
@@ -989,81 +868,92 @@ function scoreGame(
                 "destroyed"
             );
 
-            continue;
-        }
+            if(
+                spot.owner===
+                "player"
+            ){
 
-        if(
-            spot.owner===
-            "player"
-        ){
-
-            playerScore+=
+                playerDamage+=
                 spot.number;
-        }
+            }
 
-        if(
-            spot.owner===
-            "computer"
-        ){
+            if(
+                spot.owner===
+                "computer"
+            ){
 
-            computerScore+=
+                computerDamage+=
                 spot.number;
+            }
         }
     }
 
-    GAME.playerScore=
-        playerScore;
+    GAME.playerDamage=
+    playerDamage;
 
-    GAME.computerScore=
-        computerScore;
+    GAME.computerDamage=
+    computerDamage;
 
-    animateScore(
+    animateDamage(
+
         playerScoreSpan,
-        playerScore
+
+        playerDamage
+
     );
 
-    animateScore(
+    animateDamage(
+
         computerScoreSpan,
-        computerScore
+
+        computerDamage
+
     );
 
-    setTimeout(()=>{
+    setTimeout(
 
-        if(
-            playerScore>
-            computerScore
-        ){
+        ()=>{
 
-            result.textContent=
-            "🏆 YOU TORCHED THE STORCH! 🏆";
+            if(
+                playerDamage<
+                computerDamage
+            ){
 
-            makeConfetti();
+                result.textContent=
+                "🏆 YOU TORCHED THE STORCH! 🏆";
 
-            playWinSound();
+                playWinSound();
 
-        }
-        else if(
-            computerScore>
-            playerScore
-        ){
+                makeConfetti();
+            }
 
-            result.textContent=
-            "💀 THE COMPUTER WINS! 💀";
+            else if(
+                computerDamage<
+                playerDamage
+            ){
 
-            playLoseSound();
-        }
-        else{
+                result.textContent=
+                "💀 THE COMPUTER WINS! 💀";
 
-            result.textContent=
-            "🤝 IT'S A TIE! 🤝";
-        }
+                playLoseSound();
+            }
 
-    },1800);
+            else{
+
+                result.textContent=
+                "🤝 IT'S A TIE! 🤝";
+            }
+
+        },
+
+        1800
+
+    );
 }
 
-function animateScore(
+function animateDamage(
     element,
-    end
+    target
 ){
 
     let current=0;
@@ -1071,31 +961,32 @@ function animateScore(
     element.textContent="0";
 
     const timer=
-        setInterval(()=>{
 
-            current++;
+    setInterval(()=>{
 
-            element.textContent=
-                current;
+        current++;
 
-            if(
-                current>=end
-            ){
+        element.textContent=
+        current;
 
-                clearInterval(
-                    timer
-                );
-            }
+        if(
+            current>=target
+        ){
 
-        },20);
+            clearInterval(
+                timer
+            );
+        }
+
+    },25);
 }
 
 function makeConfetti(){
 
     const container=
-        document.getElementById(
-            "confetti"
-        );
+    document.getElementById(
+        "confetti"
+    );
 
     for(
         let i=0;
@@ -1104,42 +995,46 @@ function makeConfetti(){
     ){
 
         const piece=
-            document.createElement(
-                "div"
-            );
+        document.createElement(
+            "div"
+        );
 
         piece.className=
-            "piece";
+        "piece";
 
         piece.style.left=
-            Math.random()*100+
-            "vw";
+        Math.random()*100+
+        "vw";
 
         piece.style.background=
-            [
-                "red",
-                "orange",
-                "gold",
-                "lime",
-                "cyan",
-                "blue"
-            ][
-                Math.floor(
-                    Math.random()*6
-                )
-            ];
+        [
+
+            "red",
+            "orange",
+            "gold",
+            "lime",
+            "cyan",
+            "blue"
+
+        ][
+
+            Math.floor(
+                Math.random()*6
+            )
+
+        ];
 
         piece.style.animationDelay=
-            Math.random()+"s";
+        Math.random()+"s";
 
         piece.style.width=
-            (
-                6+
-                Math.random()*8
-            )+"px";
+        (
+            6+
+            Math.random()*8
+        )+"px";
 
         piece.style.height=
-            piece.style.width;
+        piece.style.width;
 
         container.appendChild(
             piece
@@ -1156,8 +1051,11 @@ function makeConfetti(){
 }
 
 music.addEventListener(
+
     "ended",
+
     ()=>{
+
         music.currentTime=0;
     }
 );
