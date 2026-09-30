@@ -105,7 +105,7 @@ Your next number:
 Click an empty circle.
 </div>
 
-<button onclick="location.reload()">
+<button onclick="startNewGame()">
 New Game
 </button>
 
@@ -143,6 +143,15 @@ const adjacency = {
 
 const board = document.getElementById("board");
 
+window.addEventListener("load", () => {
+if (sessionStorage.getItem("playMusic") === "true") {
+sessionStorage.removeItem("playMusic");
+ 
+const music = document.getElementById("gameMusic");
+music.play();
+}
+});
+    
 const rowCounts = [1,2,3,4,5,6];
 const state = [];
 
@@ -406,6 +415,23 @@ function endGame(){
         computerScore;
 }
 
+<audio id="gameMusic">
+<source src="Torch-the-Storch.mp3" type="audio/mpeg">
+</audio>
+
+function startNewGame() {
+const music = document.getElementById("gameMusic");
+ 
+music.currentTime = 0;
+music.play();
+ 
+sessionStorage.setItem("playMusic", "true");
+ 
+setTimeout(() => {
+location.reload();
+}, 100);
+}
+    
 </script>
 
 </body>
