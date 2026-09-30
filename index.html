@@ -415,23 +415,20 @@ function endGame(){
         computerScore;
 }
 
-<audio id="gameMusic">
-<source src="Torch-Storch-Song.mp3" type="audio/mpeg">
-</audio>
-
+...
 function startNewGame() {
-const music = document.getElementById("gameMusic");
- 
-music.currentTime = 0;
-music.play();
- 
-sessionStorage.setItem("playMusic", "true");
- 
-setTimeout(() => {
-location.reload();
-}, 100);
+    const music =
+        document.getElementById("gameMusic");
+
+    music.currentTime = 0;
+
+    music.play().catch(error => {
+        console.log(error);
+    });
+
+    location.reload();
 }
-    
+
 </script>
 
 </body>
