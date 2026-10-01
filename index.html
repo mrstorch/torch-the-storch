@@ -1,407 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Torch the Storch</title>
 
 <style>
-
-:root{
-
-    --blue:#29a8ff;
-
-    --orange:#ff9800;
-
-    --gold:#ffd54f;
-}
-
-*{
-    box-sizing:border-box;
-}
-
 body{
-
     margin:0;
-
-    font-family:Arial,Helvetica,sans-serif;
-
+    font-family:Arial,sans-serif;
     text-align:center;
-
     color:white;
-
-    background:
-    radial-gradient(
-        circle,
-        #333 0%,
-        #111 60%,
-        #000 100%
-    );
+    background:radial-gradient(circle,#333,#111,#000);
 }
 
 #container{
-
     max-width:1200px;
-
     margin:auto;
-
     padding:15px;
 }
 
-/* BANNER */
-
 #banner{
-
-    width:100%;
-
-    max-width:950px;
-
+    width:95%;
+    max-width:900px;
     border:4px solid orange;
-
     border-radius:12px;
-
-    box-shadow:0 0 25px orange;
-
     margin-bottom:15px;
 }
 
-h1{
-
-    margin:8px 0;
-}
-
-.controls{
-
-    display:flex;
-
-    justify-content:center;
-
-    gap:10px;
-
-    flex-wrap:wrap;
-
-    margin:15px 0;
-}
-
-button,
-select{
-
-    border:none;
-
-    border-radius:8px;
-
-    padding:12px 18px;
-
+button{
+    padding:12px 20px;
     font-size:16px;
-
     font-weight:bold;
-
+    margin:10px;
     cursor:pointer;
 }
 
-#newGame{
-
-    background:#ff5722;
-
-    color:white;
-}
-
-#musicBtn{
-
-    background:#2196f3;
-
-    color:white;
-}
-
 #status{
-
-    margin:15px;
-
-    min-height:32px;
-
     color:gold;
-
     font-size:24px;
-
-    font-weight:bold;
+    margin:15px;
+    min-height:30px;
 }
 
-#scoreBoard{
-
+#scoreboard{
     display:flex;
-
     justify-content:center;
-
-    gap:50px;
-
-    margin-bottom:20px;
-
+    gap:40px;
+    margin-bottom:15px;
     font-size:22px;
 }
 
-.playerScore{
-
-    color:var(--blue);
-
-    font-weight:bold;
-}
-
-.compScore{
-
-    color:var(--orange);
-
-    font-weight:bold;
-}
-
 #board{
-
     display:flex;
-
     flex-direction:column;
-
     align-items:center;
-
     gap:10px;
-
-    margin-top:10px;
 }
 
 .row{
-
     display:flex;
-
     gap:10px;
 }
 
 .cell{
-
-    width:68px;
-
-    height:68px;
-
+    width:65px;
+    height:65px;
     border-radius:50%;
-
     border:3px solid orange;
-
+    background:#222;
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
-    font-size:24px;
-
+    font-size:22px;
     font-weight:bold;
-
     cursor:pointer;
-
-    user-select:none;
-
-    background:
-    radial-gradient(
-        circle,
-        #555,
-        #111
-    );
-
-    transition:.2s;
 }
 
 .cell:hover{
-
-    transform:scale(1.08);
+    transform:scale(1.05);
 }
 
 .player{
-
-    background:#082742;
-
-    color:var(--blue);
+    background:#07365a;
+    color:#4db8ff;
 }
 
 .computer{
-
-    background:#442100;
-
-    color:var(--orange);
+    background:#5a2600;
+    color:#ffb347;
 }
 
 .blackhole{
-
     background:black;
-
     color:red;
-
     border-color:red;
 }
 
 .destroyed{
-
     opacity:.25;
 }
 
 #result{
-
     margin-top:20px;
-
-    min-height:40px;
-
     font-size:30px;
-
     font-weight:bold;
-}
-
-#confetti{
-
-    position:fixed;
-
-    inset:0;
-
-    pointer-events:none;
-
-    overflow:hidden;
-}
-
-.piece{
-
-    position:absolute;
-
-    width:10px;
-
-    height:10px;
-
-    animation:fall 3s linear forwards;
-}
-
-@keyframes fall{
-
-    from{
-
-        transform:
-        translateY(-50px)
-        rotate(0deg);
-    }
-
-    to{
-
-        transform:
-        translateY(110vh)
-        rotate(720deg);
-    }
-}
-
-.instructions{
-
-    max-width:900px;
-
-    margin:20px auto;
-
-    text-align:left;
-
-    background:
-    rgba(255,255,255,.08);
-
-    padding:15px;
-
-    border-radius:10px;
 }
 
 @media(max-width:700px){
 
     .cell{
-
         width:50px;
-
         height:50px;
-
         font-size:18px;
     }
 
-    #scoreBoard{
-
+    #scoreboard{
         flex-direction:column;
-
-        gap:10px;
+        gap:8px;
     }
 }
-
 </style>
-
 </head>
 
 <body>
 
-<div id="confetti"></div>
-
 <div id="container">
 
-<img
-id="banner"
-src="banner.png"
-alt="Torch the Storch Banner">
+<img id="banner" src="banner.png" alt="Torch the Storch">
 
 <h1>🔥 TORCH THE STORCH 🔥</h1>
 
-<div class="controls">
-
-<button id="newGame">
-New Game
-</button>
-
-<button id="musicBtn">
-▶ Music
-</button>
-
-<select id="difficulty">
-
-<option value="easy">
-Easy
-</option>
-
-<option value="medium">
-Medium
-</option>
-
-<option value="hard">
-Hard
-</option>
-
-<option value="torch">
-Torch Mode
-</option>
-
-</select>
-
-</div>
+<button id="newGame">New Game</button>
 
 <div id="status">
 Press New Game
 </div>
 
-<div id="scoreBoard">
+<div id="scoreboard">
 
-<div class="playerScore">
-
+<div>
 Player Damage:
-<span id="playerScore">
-0
-</span>
-
+<span id="playerDamage">0</span>
 </div>
 
-<div class="compScore">
-
+<div>
 Computer Damage:
-<span id="computerScore">
-0
-</span>
-
+<span id="computerDamage">0</span>
 </div>
 
 </div>
@@ -410,139 +155,88 @@ Computer Damage:
 
 <div id="result"></div>
 
-<div class="instructions">
-
-<ol>
-
-<li>Take turns choosing spaces.</li>
-
-<li>Numbers 1-20 are placed automatically.</li>
-
-<li>The last open space becomes the Black Hole.</li>
-
-<li>Numbers next to the Black Hole are destroyed.</li>
-
-<li>Lowest damage wins!</li>
-
-</ol>
+<audio id="music" src="Torch-the-Storch.mp3"></audio>
 
 </div>
 
-<audio
-id="bgMusic"
-src="Torch-the-Storch.mp3"
-preload="auto">
-</audio>
-
 <script>
 
-const GAME={
+const board = document.getElementById("board");
+const statusText = document.getElementById("status");
+const resultText = document.getElementById("result");
 
-    spaces:{},
+const playerDamageSpan =
+document.getElementById("playerDamage");
 
-    currentNumber:1,
+const computerDamageSpan =
+document.getElementById("computerDamage");
 
-    gameActive:false,
+const music =
+document.getElementById("music");
 
-    playerTurn:true,
+const rows = [1,2,3,4,5,6];
 
-    difficulty:"easy",
+let spaces = {};
+let currentNumber = 1;
+let playerTurn = true;
+let gameActive = false;
 
-    playerDamage:0,
-
-    computerDamage:0
-};
-
-const board=
-document.getElementById("board");
-
-const statusText=
-document.getElementById("status");
-
-const result=
-document.getElementById("result");
-
-const playerScoreSpan=
-document.getElementById("playerScore");
-
-const computerScoreSpan=
-document.getElementById("computerScore");
-
-const music=
-document.getElementById("bgMusic");
-
-const rows=[1,2,3,4,5,6];
-
-const adjacency={
-
+const adjacency = {
 1:[2,3],
-
 2:[1,3,4,5],
 3:[1,2,5,6],
-
 4:[2,5,7,8],
 5:[2,3,4,6,8,9],
 6:[3,5,9,10],
-
 7:[4,8,11,12],
 8:[4,5,7,9,12,13],
 9:[5,6,8,10,13,14],
 10:[6,9,14,15],
-
 11:[7,12,16,17],
 12:[7,8,11,13,17,18],
 13:[8,9,12,14,18,19],
 14:[9,10,13,15,19,20],
 15:[10,14,20,21],
-
 16:[11,17],
 17:[11,12,16,18],
 18:[12,13,17,19],
 19:[13,14,18,20],
 20:[14,15,19,21],
 21:[15,20]
-
 };
 
 function createBoard(){
 
-    board.innerHTML="";
+    board.innerHTML = "";
+    spaces = {};
 
-    GAME.spaces={};
-
-    let id=1;
+    let id = 1;
 
     for(let r=0;r<rows.length;r++){
 
-        const row=
+        const row =
         document.createElement("div");
 
         row.className="row";
 
         for(let c=0;c<rows[r];c++){
 
-            const cell=
+            const cell =
             document.createElement("div");
 
             cell.className="cell";
 
             const currentId=id;
 
-            GAME.spaces[currentId]={
-
+            spaces[currentId]={
                 owner:null,
-
                 number:null,
-
                 cell:cell
             };
 
             cell.addEventListener(
-
                 "click",
-
                 ()=>playerMove(currentId)
-
             );
 
             row.appendChild(cell);
@@ -558,24 +252,14 @@ function startGame(){
 
     createBoard();
 
-    GAME.currentNumber=1;
+    currentNumber=1;
+    playerTurn=true;
+    gameActive=true;
 
-    GAME.playerDamage=0;
-    GAME.computerDamage=0;
+    playerDamageSpan.textContent="0";
+    computerDamageSpan.textContent="0";
 
-    GAME.gameActive=true;
-
-    GAME.playerTurn=true;
-
-    GAME.difficulty=
-    document.getElementById(
-        "difficulty"
-    ).value;
-
-    result.textContent="";
-
-    playerScoreSpan.textContent="0";
-    computerScoreSpan.textContent="0";
+    resultText.textContent="";
 
     statusText.textContent=
     "Your Turn!";
@@ -586,712 +270,161 @@ function startGame(){
     music.play().catch(()=>{});
 }
 
-function emptySpaces(){
+function getOpenSpaces(){
 
-    const list=[];
+    const open=[];
 
     for(let i=1;i<=21;i++){
 
-        if(
-            !GAME.spaces[i].owner
-        ){
-            list.push(i);
+        if(!spaces[i].owner){
+            open.push(i);
         }
     }
 
-    return list;
+    return open;
 }
 
 function playerMove(id){
 
-    if(!GAME.gameActive) return;
+    if(!gameActive) return;
 
-    if(!GAME.playerTurn) return;
+    if(!playerTurn) return;
 
-    const space=
-    GAME.spaces[id];
+    if(spaces[id].owner) return;
 
-    if(!space) return;
-
-    if(space.owner) return;
-
-    claimSpace(
-        id,
-        "player"
-    );
-}
-
-function claimSpace(
-    id,
-    owner
-){
-
-    const space=
-    GAME.spaces[id];
-
-    space.owner=
-    owner;
-
-    space.number=
-    GAME.currentNumber;
-
-    space.cell.textContent=
-    GAME.currentNumber;
-
-    space.cell.classList.add(
-        owner
-    );
-
-    playMoveSound();
-
-    GAME.currentNumber++;
-
-    if(
-        GAME.currentNumber>20
-    ){
-
-        finishGame();
-
-        return;
-    }
-
-    GAME.playerTurn=
-    !GAME.playerTurn;
-
-    statusText.textContent=
-
-    GAME.playerTurn
-    ? "Your Turn!"
-    : "Computer Thinking...";
-
-    if(
-        !GAME.playerTurn
-    ){
-
-        const delay=
-
-        700+
-
-        Math.random()*600;
-
-        setTimeout(
-
-            computerMove,
-
-            delay
-
-        );
-    }
+    claimSpace(id,"player");
 }
 
 function computerMove(){
 
-    if(
-        !GAME.gameActive
-    ) return;
+    const open =
+    getOpenSpaces();
 
-    let move;
-
-    switch(
-        GAME.difficulty
-    ){
-
-        case "medium":
-
-            move=
-            mediumMove();
-
-            break;
-
-        case "hard":
-
-            move=
-            hardMove();
-
-            break;
-
-        case "torch":
-
-            move=
-            torchMove();
-
-            break;
-
-        default:
-
-            move=
-            easyMove();
-    }
-
-    claimSpace(
-        move,
-        "computer"
-    );
-}
-
-/* EASY AI */
-
-function easyMove(){
-
-    const open=
-    emptySpaces();
-
-    return open[
+    const move =
+    open[
         Math.floor(
-            Math.random()*
-            open.length
+            Math.random()*open.length
         )
     ];
+
+    claimSpace(move,"computer");
 }
 
-/* MEDIUM AI */
+function claimSpace(id,owner){
 
-function mediumMove(){
+    spaces[id].owner=owner;
 
-    const open=
-    emptySpaces();
+    spaces[id].number=currentNumber;
 
-    let best=open[0];
+    spaces[id].cell.textContent=
+    currentNumber;
 
-    let bestScore=-999;
+    spaces[id].cell.classList.add(owner);
 
-    for(
-        const spot
-        of open
-    ){
+    currentNumber++;
 
-        const score=
+    if(currentNumber>20){
 
-        adjacency[spot]
-        .length;
-
-        if(
-            score>
-            bestScore
-        ){
-
-            bestScore=
-            score;
-
-            best=
-            spot;
-        }
+        finishGame();
+        return;
     }
 
-    return best;
-}
+    playerTurn=!playerTurn;
 
-/* HARD AI */
+    statusText.textContent=
+    playerTurn
+    ? "Your Turn!"
+    : "Computer Thinking...";
 
-function hardMove(){
+    if(!playerTurn){
 
-    const open=
-    emptySpaces();
-
-    let best=open[0];
-
-    let bestScore=-99999;
-
-    for(
-        const spot
-        of open
-    ){
-
-        let score=0;
-
-        score+=
-        adjacency[spot]
-        .length*4;
-
-        if(
-            [
-                5,8,9,
-                12,13,14,
-                18,19
-            ]
-            .includes(
-                spot
-            )
-        ){
-
-            score+=20;
-        }
-
-        if(
-            spot===13
-        ){
-
-            score+=25;
-        }
-
-        if(
-            score>
-            bestScore
-        ){
-
-            bestScore=
-            score;
-
-            best=
-            spot;
-        }
+        setTimeout(
+            computerMove,
+            800
+        );
     }
-
-    return best;
 }
-
-/* TORCH MODE AI */
-
-function torchMove(){
-
-    const open=
-    emptySpaces();
-
-    let best=open[0];
-
-    let bestScore=-999999;
-
-    for(
-        const spot
-        of open
-    ){
-
-        let score=0;
-
-        score+=
-        adjacency[spot]
-        .length*10;
-
-        for(
-            const neighbor
-            of adjacency[spot]
-        ){
-
-            const n=
-            GAME.spaces[
-                neighbor
-            ];
-
-            if(
-                n.owner===
-                "computer"
-            ){
-
-                score+=
-                n.number*6;
-            }
-
-            if(
-                n.owner===
-                "player"
-            ){
-
-                score-=
-                n.number*4;
-            }
-        }
-
-        if(
-            spot===13
-        ){
-
-            score+=35;
-        }
-
-        if(
-            score>
-            bestScore
-        ){
-
-            bestScore=
-            score;
-
-            best=
-            spot;
-        }
-    }
-
-    return best;
-}
-
-/* SOUND ENGINE */
-
-function beep(
-    frequency,
-    duration
-){
-
-    const ctx=
-    new(
-        window.AudioContext ||
-        window.webkitAudioContext
-    )();
-
-    const osc=
-    ctx.createOscillator();
-
-    const gain=
-    ctx.createGain();
-
-    osc.connect(gain);
-
-    gain.connect(
-        ctx.destination
-    );
-
-    osc.frequency.value=
-    frequency;
-
-    osc.type="sine";
-
-    gain.gain.setValueAtTime(
-        0.08,
-        ctx.currentTime
-    );
-
-    osc.start();
-
-    osc.stop(
-        ctx.currentTime+
-        duration/1000
-    );
-}
-
-function playMoveSound(){
-
-    beep(
-        550,
-        50
-    );
-}
-
-function playBlackHoleSound(){
-
-    beep(
-        120,
-        700
-    );
-}
-
-function playWinSound(){
-
-    beep(800,150);
-
-    setTimeout(
-        ()=>beep(1000,150),
-        180
-    );
-
-    setTimeout(
-        ()=>beep(1300,250),
-        360
-    );
-}
-
-function playLoseSound(){
-
-    beep(300,250);
-
-    setTimeout(
-        ()=>beep(170,500),
-        250
-    );
-}
-
-document
-.getElementById(
-    "musicBtn"
-)
-.addEventListener(
-    "click",
-    ()=>{
-
-        if(
-            music.paused
-        ){
-
-            music.play()
-            .catch(()=>{});
-        }
-        else{
-
-            music.pause();
-        }
-    }
-);
-
-document
-.getElementById(
-    "newGame"
-)
-.addEventListener(
-    "click",
-    startGame
-);
 
 function finishGame(){
 
-    GAME.gameActive=false;
+    gameActive=false;
 
-    const open=
-    emptySpaces();
+    const blackHole =
+    getOpenSpaces()[0];
 
-    const blackHole=
-    open[0];
+    spaces[blackHole]
+    .cell
+    .classList
+    .add("blackhole");
 
-    const holeCell=
-    GAME.spaces[
-        blackHole
-    ].cell;
-
-    holeCell.classList.add(
-        "blackhole"
-    );
-
-    holeCell.textContent="🕳";
-
-    statusText.textContent=
-    "BLACK HOLE ACTIVATED!";
-
-    playBlackHoleSound();
-
-    setTimeout(
-
-        ()=>scoreGame(
-            blackHole
-        ),
-
-        1200
-
-    );
-}
-
-function scoreGame(
-    blackHole
-){
+    spaces[blackHole]
+    .cell
+    .textContent="🕳";
 
     const destroyed=
-    adjacency[
-        blackHole
-    ];
+    adjacency[blackHole];
 
     let playerDamage=0;
-
     let computerDamage=0;
 
-    for(
-        let i=1;
-        i<=21;
-        i++
-    ){
-
-        if(
-            i===blackHole
-        ){
-            continue;
-        }
+    destroyed.forEach(id=>{
 
         const spot=
-        GAME.spaces[i];
+        spaces[id];
+
+        spot.cell.classList.add(
+            "destroyed"
+        );
 
         if(
-            destroyed.includes(i)
+            spot.owner==="player"
         ){
-
-            spot.cell.classList.add(
-                "destroyed"
-            );
-
-            if(
-                spot.owner===
-                "player"
-            ){
-
-                playerDamage+=
-                spot.number;
-            }
-
-            if(
-                spot.owner===
-                "computer"
-            ){
-
-                computerDamage+=
-                spot.number;
-            }
+            playerDamage +=
+            spot.number;
         }
-    }
 
-    GAME.playerDamage=
+        if(
+            spot.owner==="computer"
+        ){
+            computerDamage +=
+            spot.number;
+        }
+    });
+
+    playerDamageSpan.textContent=
     playerDamage;
 
-    GAME.computerDamage=
+    computerDamageSpan.textContent=
     computerDamage;
 
-    animateDamage(
-
-        playerScoreSpan,
-
-        playerDamage
-
-    );
-
-    animateDamage(
-
-        computerScoreSpan,
-
+    if(
+        playerDamage <
         computerDamage
-
-    );
-
-    setTimeout(
-
-        ()=>{
-
-            if(
-                playerDamage<
-                computerDamage
-            ){
-
-                result.textContent=
-                "🏆 YOU TORCHED THE STORCH! 🏆";
-
-                playWinSound();
-
-                makeConfetti();
-            }
-
-            else if(
-                computerDamage<
-                playerDamage
-            ){
-
-                result.textContent=
-                "💀 THE COMPUTER WINS! 💀";
-
-                playLoseSound();
-            }
-
-            else{
-
-                result.textContent=
-                "🤝 IT'S A TIE! 🤝";
-            }
-
-        },
-
-        1800
-
-    );
-}
-
-function animateDamage(
-    element,
-    target
-){
-
-    let current=0;
-
-    element.textContent="0";
-
-    const timer=
-
-    setInterval(()=>{
-
-        current++;
-
-        element.textContent=
-        current;
-
-        if(
-            current>=target
-        ){
-
-            clearInterval(
-                timer
-            );
-        }
-
-    },25);
-}
-
-function makeConfetti(){
-
-    const container=
-    document.getElementById(
-        "confetti"
-    );
-
-    for(
-        let i=0;
-        i<150;
-        i++
     ){
 
-        const piece=
-        document.createElement(
-            "div"
-        );
+        resultText.textContent =
+        "🏆 YOU TORCHED THE STORCH!";
 
-        piece.className=
-        "piece";
+    }else if(
+        computerDamage <
+        playerDamage
+    ){
 
-        piece.style.left=
-        Math.random()*100+
-        "vw";
+        resultText.textContent =
+        "💀 COMPUTER WINS!";
 
-        piece.style.background=
-        [
+    }else{
 
-            "red",
-            "orange",
-            "gold",
-            "lime",
-            "cyan",
-            "blue"
-
-        ][
-
-            Math.floor(
-                Math.random()*6
-            )
-
-        ];
-
-        piece.style.animationDelay=
-        Math.random()+"s";
-
-        piece.style.width=
-        (
-            6+
-            Math.random()*8
-        )+"px";
-
-        piece.style.height=
-        piece.style.width;
-
-        container.appendChild(
-            piece
-        );
-
-        setTimeout(
-
-            ()=>piece.remove(),
-
-            3500
-
-        );
+        resultText.textContent =
+        "🤝 TIE GAME";
     }
 }
 
-music.addEventListener(
-
-    "ended",
-
-    ()=>{
-
-        music.currentTime=0;
-    }
+document
+.getElementById("newGame")
+.addEventListener(
+    "click",
+    startGame
 );
 
 createBoard();
