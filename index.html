@@ -464,6 +464,31 @@ function getNeighbors(index){
     return neighbors;
 }
 
+const music = document.getElementById("music");
+const musicBtn = document.getElementById("musicBtn");
+
+musicBtn.addEventListener("click", function () {
+
+    if (music.paused) {
+
+        music.play();
+        musicBtn.textContent = "⏸ Pause Music";
+
+    } else {
+
+        music.pause();
+        musicBtn.textContent = "▶ Play Music";
+
+    }
+
+});
+
+music.addEventListener("ended", function () {
+
+    musicBtn.textContent = "▶ Play Music";
+
+});
+    
 </script>
 
 </body>
