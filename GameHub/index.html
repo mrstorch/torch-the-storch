@@ -3,51 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mr. Storch's Math Games</title>
+<title>Mr. Storch's Math Game Hub</title>
 
 <style>
-body {
+body{
     font-family: Arial, sans-serif;
-    text-align: center;
-    background: #0f172a;
-    color: white;
-    margin: 0;
-    padding: 40px;
+    background:#0f172a;
+    color:white;
+    text-align:center;
+    margin:0;
+    padding:40px;
 }
 
-h1 {
-    color: gold;
-    margin-bottom: 10px;
+h1{
+    color:gold;
 }
 
-p {
-    font-size: 18px;
-    margin-bottom: 40px;
+.games{
+    max-width:900px;
+    margin:auto;
 }
 
-.game-button {
-    display: block;
-    width: 320px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #2563eb;
-    color: white;
-    text-decoration: none;
-    border-radius: 12px;
-    font-size: 24px;
-    font-weight: bold;
-    transition: 0.2s;
+.game-card{
+    background:white;
+    color:black;
+    margin:20px auto;
+    padding:20px;
+    border-radius:12px;
+    width:80%;
+    max-width:600px;
+    box-shadow:0 0 10px rgba(0,0,0,.3);
 }
 
-.game-button:hover {
-    background: #1d4ed8;
-    transform: scale(1.03);
+.game-card h2{
+    margin-top:0;
 }
 
-.footer {
-    margin-top: 50px;
-    color: #cbd5e1;
-    font-size: 14px;
+.play-btn{
+    display:inline-block;
+    background:#2563eb;
+    color:white;
+    text-decoration:none;
+    padding:12px 20px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.play-btn:hover{
+    background:#1d4ed8;
 }
 </style>
 </head>
@@ -56,22 +59,40 @@ p {
 
 <h1>🎮 Mr. Storch's Math Game Hub</h1>
 
-<p>Select a game below to begin.</p>
+<p>Choose a game below.</p>
 
-../
-🔥 Torch the Storch
-</a>
+<div class="games">
 
-../ScaleDetective/
-🔍 Scale Detective
-</a>
+    <!-- Torch the Storch -->
+    <div class="game-card">
+        <h2>🔥 Torch the Storch</h2>
+        <p>Strategy game using numbers 1-10.</p>
 
-../D10.html
-🎲 Die Roller
-</a>
+        ../
+           Play Game
+        </a>
+    </div>
 
-<div class="footer">
-Built for 7th Grade Math
+    <!-- Scale Detective -->
+    <div class="game-card">
+        <h2>🔍 Scale Detective</h2>
+        <p>Solve cases involving scale factor, scale drawings, and scaled copies.</p>
+
+        ../ScaleDetective/
+           Play Game
+        </a>
+    </div>
+
+    <!-- Die Roller -->
+    <div class="game-card">
+        <h2>🎲 Die Roller</h2>
+        <p>Roll a virtual d10.</p>
+
+        ../D10.html
+           Play Game
+        </a>
+    </div>
+
 </div>
 
 </body>
