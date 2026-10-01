@@ -17,12 +17,11 @@ body {
 
 h1 {
     color: gold;
-    margin-bottom: 10px;
 }
 
 .subtitle {
-    font-size: 18px;
     margin-bottom: 40px;
+    font-size: 18px;
 }
 
 .games {
@@ -31,10 +30,8 @@ h1 {
 }
 
 .game-card {
-    display: block;
     background: white;
     color: black;
-    text-decoration: none;
     margin: 20px auto;
     padding: 25px;
     border-radius: 12px;
@@ -49,6 +46,11 @@ h1 {
     box-shadow: 0 0 20px rgba(37,99,235,.6);
 }
 
+.game-link {
+    text-decoration: none;
+    color: inherit;
+}
+
 .game-card h2 {
     margin-top: 0;
     margin-bottom: 10px;
@@ -57,7 +59,6 @@ h1 {
 .game-card p {
     margin: 0;
     color: #444;
-    line-height: 1.4;
 }
 
 .footer {
@@ -66,8 +67,8 @@ h1 {
     font-size: 14px;
 }
 </style>
-
 </head>
+
 <body>
 
 <h1>🎮 Mr. Storch's Math Game Hub</h1>
@@ -78,28 +79,25 @@ Choose a game to begin.
 
 <div class="games">
 
-    <!-- Torch the Storch -->
     ../
-        <h2>🔥 Torch the Storch</h2>
-        <p>
-            Strategic number game using values 1-10.
-        </p>
+        <div class="game-card">
+            <h2>🔥 Torch the Storch</h2>
+            <p>Strategic number game using values 1-10.</p>
+        </div>
     </a>
 
-    <!-- Scale Detective -->
     ../ScaleDetective/
-        <h2>🔍 Scale Detective</h2>
-        <p>
-            Investigate scale factors, scaled copies, and scale drawings.
-        </p>
+        <div class="game-card">
+            <h2>🔍 Scale Detective</h2>
+            <p>Investigate scale factors, scaled copies, and scale drawings.</p>
+        </div>
     </a>
 
-    <!-- Die Roller -->
     ../D10.html
-        <h2>🎲 Die Roller</h2>
-        <p>
-            Roll a virtual 10-sided die for games and classroom activities.
-        </p>
+        <div class="game-card">
+            <h2>🎲 Die Roller</h2>
+            <p>Roll a virtual 10-sided die for games and classroom activities.</p>
+        </div>
     </a>
 
 </div>
