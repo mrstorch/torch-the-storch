@@ -893,20 +893,6 @@ function playerPlace(spaceId){
 
     buildPlayerRack();
 
-    if(
-    GAME.playerNumbers.length===0
-){
-
-    if(
-        GAME.computerNumbers.length===0
-    ){
-
-        finishGame();
-
-        return;
-    }
-}
-
     statusText.textContent =
     "Computer Thinking...";
 
