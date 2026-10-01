@@ -394,7 +394,125 @@ alt="Torch the Storch">
 
 <div class="controls">
 
-<button id
+<button id="newGame">
+
+New Game
+
+</button>
+
+<select id="difficulty">
+
+<option value="easy">
+
+Easy
+
+</option>
+
+<option value="medium">
+
+Medium
+
+</option>
+
+<option value="hard">
+
+Hard
+
+</option>
+
+<option value="torch">
+
+Torch Mode
+
+</option>
+
+</select>
+
+</div>
+
+<div id="status">
+
+Choose a number and place it!
+
+</div>
+
+<div id="scoreBoard">
+
+<div class="playerScore">
+
+Player Damage:
+<span id="playerDamage">0</span>
+
+</div>
+
+<div class="compScore">
+
+Computer Damage:
+<span id="computerDamage">0</span>
+
+</div>
+
+</div>
+
+<div class="rackTitle">
+
+YOUR NUMBERS
+
+</div>
+
+<div id="playerRack"
+     class="numberRack">
+
+</div>
+
+<div class="rackTitle">
+
+COMPUTER NUMBERS
+
+</div>
+
+<div id="computerRack"
+     class="numberRack">
+
+</div>
+
+<div id="board">
+
+</div>
+
+<div id="result">
+
+</div>
+
+<div class="instructions">
+
+<ol>
+
+<li>Click a number from your rack.</li>
+
+<li>Click an empty space to place it.</li>
+
+<li>The computer does the same.</li>
+
+<li>When all numbers are used, the last space becomes the Black Hole.</li>
+
+<li>Numbers next to the Black Hole are destroyed.</li>
+
+<li>Add up the values of your destroyed numbers.</li>
+
+<li>Lowest damage wins!</li>
+
+</ol>
+
+</div>
+
+<audio
+id="bgMusic"
+src="Torch-the-Storch.mp3"
+preload="auto">
+</audio>
+
+<script>
 
 /* =========================
    GAME STATE
