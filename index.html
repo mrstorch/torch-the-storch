@@ -320,6 +320,240 @@ select{
 
         height:50px;
 
+        font-size:18px;
+    }
+
+    #scoreBoard{
+
+        flex-direction:column;
+
+        gap:10px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="confetti"></div>
+
+<div id="container">
+
+<img
+id="banner"
+src="banner.png"
+alt="Torch the Storch Banner">
+
+<h1>🔥 TORCH THE STORCH 🔥</h1>
+
+<div class="controls">
+
+<button id="newGame">
+New Game
+</button>
+
+<button id="musicBtn">
+▶ Music
+</button>
+
+<select id="difficulty">
+
+<option value="easy">
+Easy
+</option>
+
+<option value="medium">
+Medium
+</option>
+
+<option value="hard">
+Hard
+</option>
+
+<option value="torch">
+Torch Mode
+</option>
+
+</select>
+
+</div>
+
+<div id="status">
+Press New Game
+</div>
+
+<div id="scoreBoard">
+
+<div class="playerScore">
+
+Player Damage:
+<span id="playerScore">
+0
+</span>
+
+</div>
+
+<div class="compScore">
+
+Computer Damage:
+<span id="computerScore">
+0
+</span>
+
+</div>
+
+</div>
+
+<div id="board"></div>
+
+<div id="result"></div>
+
+<div class="instructions">
+
+<ol>
+
+<li>Take turns choosing spaces.</li>
+
+<li>Numbers 1-20 are placed automatically.</li>
+
+<li>The last open space becomes the Black Hole.</li>
+
+<li>Numbers next to the Black Hole are destroyed.</li>
+
+<li>Lowest damage wins!</li>
+
+</ol>
+
+</div>
+
+<audio
+id="bgMusic"
+src="Torch-the-Storch.mp3"
+preload="auto">
+</audio>
+
+<script>
+
+const GAME={
+
+    spaces:{},
+
+    currentNumber:1,
+
+    gameActive:false,
+
+    playerTurn:true,
+
+    difficulty:"easy",
+
+    playerDamage:0,
+
+    computerDamage:0
+};
+
+const board=
+document.getElementById("board");
+
+const statusText=
+document.getElementById("status");
+
+const result=
+document.getElementById("result");
+
+const playerScoreSpan=
+document.getElementById("playerScore");
+
+const computerScoreSpan=
+document.getElementById("computerScore");
+
+const music=
+document.getElementById("bgMusic");
+
+const rows=[1,2,3,4,5,6];
+
+const adjacency={
+
+1:[2,3],
+
+2:[1,3,4,5],
+3:[1,2,5,6],
+
+4:[2,5,7,8],
+5:[2,3,4,6,8,9],
+6:[3,5,9,10],
+
+7:[4,8,11,12],
+8:[4,5,7,9,12,13],
+9:[5,6,8,10,13,14],
+10:[6,9,14,15],
+
+11:[7,12,16,17],
+12:[7,8,11,13,17,18],
+13:[8,9,12,14,18,19],
+14:[9,10,13,15,19,20],
+15:[10,14,20,21],
+
+16:[11,17],
+17:[11,12,16,18],
+18:[12,13,17,19],
+19:[13,14,18,20],
+20:[14,15,19,21],
+21:[15,20]
+
+};
+
+function createBoard(){
+
+    board.innerHTML="";
+
+    GAME.spaces={};
+
+    let id=1;
+
+    for(let r=0;r<rows.length;r++){
+
+        const row=
+        document.createElement("div");
+
+        row.className="row";
+
+        for(let c=0;c<rows[r];c++){
+
+            const cell=
+            document.createElement("div");
+
+            cell.className="cell";
+
+            const currentId=id;
+
+            GAME.spaces[currentId]={
+
+                owner:null,
+
+                number:null,
+
+                cell:cell
+            };
+
+            cell.addEventListener(
+
+                "click",
+
+                ()=>playerMove(currentId)
+
+            );
+
+            row.appendChild(cell);
+
+            id++;
+        }
+
+        board.appendChild(row);
+    }
+}
+
 function startGame(){
 
     createBoard();
