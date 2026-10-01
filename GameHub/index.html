@@ -6,93 +6,106 @@
 <title>Mr. Storch's Math Game Hub</title>
 
 <style>
-body{
+body {
     font-family: Arial, sans-serif;
-    background:#0f172a;
-    color:white;
-    text-align:center;
-    margin:0;
-    padding:40px;
+    background: #0f172a;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 40px;
 }
 
-h1{
-    color:gold;
+h1 {
+    color: gold;
+    margin-bottom: 10px;
 }
 
-.games{
-    max-width:900px;
-    margin:auto;
+.subtitle {
+    font-size: 18px;
+    margin-bottom: 40px;
 }
 
-.game-card{
-    background:white;
-    color:black;
-    margin:20px auto;
-    padding:20px;
-    border-radius:12px;
-    width:80%;
-    max-width:600px;
-    box-shadow:0 0 10px rgba(0,0,0,.3);
+.games {
+    max-width: 900px;
+    margin: auto;
 }
 
-.game-card h2{
-    margin-top:0;
+.game-card {
+    display: block;
+    background: white;
+    color: black;
+    text-decoration: none;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 0 12px rgba(0,0,0,.3);
+    transition: 0.2s;
 }
 
-.play-btn{
-    display:inline-block;
-    background:#2563eb;
-    color:white;
-    text-decoration:none;
-    padding:12px 20px;
-    border-radius:8px;
-    font-weight:bold;
+.game-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px rgba(37,99,235,.6);
 }
 
-.play-btn:hover{
-    background:#1d4ed8;
+.game-card h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.game-card p {
+    margin: 0;
+    color: #444;
+    line-height: 1.4;
+}
+
+.footer {
+    margin-top: 40px;
+    color: #cbd5e1;
+    font-size: 14px;
 }
 </style>
-</head>
 
+</head>
 <body>
 
 <h1>🎮 Mr. Storch's Math Game Hub</h1>
 
-<p>Choose a game below.</p>
+<div class="subtitle">
+Choose a game to begin.
+</div>
 
 <div class="games">
 
     <!-- Torch the Storch -->
-    <div class="game-card">
+    ../
         <h2>🔥 Torch the Storch</h2>
-        <p>Strategy game using numbers 1-10.</p>
-
-        ../
-           Play Game
-        </a>
-    </div>
+        <p>
+            Strategic number game using values 1-10.
+        </p>
+    </a>
 
     <!-- Scale Detective -->
-    <div class="game-card">
+    ../ScaleDetective/
         <h2>🔍 Scale Detective</h2>
-        <p>Solve cases involving scale factor, scale drawings, and scaled copies.</p>
-
-        ../ScaleDetective/
-           Play Game
-        </a>
-    </div>
+        <p>
+            Investigate scale factors, scaled copies, and scale drawings.
+        </p>
+    </a>
 
     <!-- Die Roller -->
-    <div class="game-card">
+    ../D10.html
         <h2>🎲 Die Roller</h2>
-        <p>Roll a virtual d10.</p>
+        <p>
+            Roll a virtual 10-sided die for games and classroom activities.
+        </p>
+    </a>
 
-        ../D10.html
-           Play Game
-        </a>
-    </div>
+</div>
 
+<div class="footer">
+Built for 7th Grade Math
 </div>
 
 </body>
