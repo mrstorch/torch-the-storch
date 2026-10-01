@@ -8,90 +8,61 @@
 <style>
 body {
     font-family: Arial, sans-serif;
-    background: #0f172a;
+    background-color: #0f172a;
     color: white;
-    text-align: center;
-    margin: 0;
-    padding: 40px;
+    max-width: 800px;
+    margin: auto;
+    padding: 30px;
 }
 
 h1 {
     color: gold;
+    text-align: center;
 }
 
-.subtitle {
-    margin-bottom: 40px;
-    font-size: 18px;
-}
-
-.games {
-    max-width: 900px;
-    margin: auto;
-}
-
-.game-card {
-    display: block;
+.game {
     background: white;
     color: black;
-    text-decoration: none;
-    margin: 20px auto;
-    padding: 25px;
-    border-radius: 12px;
-    width: 80%;
-    max-width: 600px;
-    box-shadow: 0 0 12px rgba(0,0,0,.3);
-    transition: 0.2s;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
 }
 
-.game-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 20px rgba(37,99,235,.6);
-}
-
-.game-link {
-    text-decoration: none;
-    color: inherit;
-}
-
-.game-card h2 {
+.game h2 {
     margin-top: 0;
-    margin-bottom: 10px;
 }
 
-.game-card p {
-    margin: 0;
-    color: #444;
+.game a {
+    color: #2563eb;
+    font-weight: bold;
+    text-decoration: none;
 }
 
-.footer {
-    margin-top: 40px;
-    color: #cbd5e1;
-    font-size: 14px;
+.game a:hover {
+    text-decoration: underline;
 }
 </style>
 </head>
-
 <body>
 
 <h1>🎮 Mr. Storch's Math Game Hub</h1>
 
-<div class="games">
+<div class="game">
+    <h2>🔥 Torch the Storch</h2>
+    <p>Strategic number game using values 1-10.</p>
+    <p>../Play Torch the Storch</a></p>
+</div>
 
-    ../
-        <h2>🔥 Torch the Storch</h2>
-        <p>Strategic number game using values 1-10.</p>
-    </a>
+<div class="game">
+    <h2>🔍 Scale Detective</h2>
+    <p>Investigate scale factors, scaled copies, and scale drawings.</p>
+    <p>../ScaleDetective/Play Scale Detective</a></p>
+</div>
 
-    ../ScaleDetective/
-        <h2>🔍 Scale Detective</h2>
-        <p>Investigate scale factors, scaled copies, and scale drawings.</p>
-    </a>
-
-    ../D10.html
-        <h2>🎲 Die Roller</h2>
-        <p>Roll a virtual 10-sided die for games and classroom activities.</p>
-    </a>
-
+<div class="game">
+    <h2>🎲 Die Roller</h2>
+    <p>Roll a virtual 10-sided die for games and classroom activities.</p>
+    <p>../D10.htmlOpen Die Roller</a></p>
 </div>
 
 </body>
