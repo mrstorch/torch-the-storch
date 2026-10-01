@@ -244,4 +244,47 @@ function createBoard(){
 
     board.innerHTML="";
 
-    const rows
+    const rows=[1,2,3,4,5,6];
+
+    for(let r=0;r<rows.length;r++){
+
+        const row=
+        document.createElement("div");
+
+        row.className="row";
+
+        for(let c=0;c<rows[r];c++){
+
+            const cell=
+            document.createElement("div");
+
+            cell.className="cell";
+
+            row.appendChild(cell);
+        }
+
+        board.appendChild(row);
+    }
+}
+
+function startGame(){
+
+    createRacks();
+
+    createBoard();
+
+    document
+    .getElementById(
+        "status"
+    ).textContent=
+    "Game Started";
+
+    if(firstGame){
+
+        music.play()
+        .catch(()=>{});
+
+        firstGame=false;
+    }
+}
+
