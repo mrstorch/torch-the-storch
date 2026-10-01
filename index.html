@@ -450,9 +450,14 @@ function getNeighbors(index){
     return neighbors;
 }
 
+let music = new Audio("Torch-the-Storch.mp3");
+music.loop = false;
+
 function playMusic(){
-    const music = new Audio("Torch-the-Storch.mp3");
+
+    music.currentTime = 0;
     music.play();
+
 }
 
 </script>
