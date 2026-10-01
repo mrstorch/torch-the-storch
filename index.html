@@ -7,57 +7,50 @@
 
 <style>
 body{
-    margin:0;
-    padding:20px;
     background:#111;
     color:white;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
     text-align:center;
+    margin:0;
+    padding:20px;
 }
 
-#banner{
-    max-width:600px;
-    width:50%;
-    display:block;
-    margin:0 auto 20px auto;
-    border-radius:10px;
+h1{
+    color:orange;
 }
 
-#startBtn{
-    background:#ff6a00;
-    color:white;
-    border:none;
-    padding:16px 30px;
-    font-size:24px;
-    font-weight:bold;
-    border-radius:10px;
-    cursor:pointer;
+#instructions{
     margin-bottom:20px;
 }
 
 #status{
     font-size:22px;
     margin:15px;
+    min-height:30px;
 }
 
-#numbers{
+#numberBank{
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
-    gap:8px;
+    gap:10px;
     margin-bottom:30px;
 }
 
-.numBtn{
-    width:55px;
-    height:55px;
+.number{
+    width:60px;
+    height:60px;
     border-radius:50%;
     border:none;
-    background:#1e88e5;
+    background:#1976d2;
     color:white;
-    font-size:22px;
+    font-size:24px;
     font-weight:bold;
     cursor:pointer;
+}
+
+.number:hover{
+    transform:scale(1.05);
 }
 
 .selected{
@@ -69,28 +62,26 @@ body{
     flex-direction:column;
     align-items:center;
     gap:10px;
-    margin-top:20px;
 }
 
 .row{
     display:flex;
-    justify-content:center;
     gap:10px;
 }
 
 .cell{
-    width:75px;
-    height:75px;
-    border-radius:50%;
+    width:80px;
+    height:80px;
     background:white;
+    border-radius:50%;
     border:3px solid #444;
-    color:black;
     display:flex;
-    justify-content:center;
     align-items:center;
-    font-size:24px;
+    justify-content:center;
+    font-size:28px;
     font-weight:bold;
     cursor:pointer;
+    color:black;
 }
 
 .player{
@@ -103,12 +94,12 @@ body{
 
 .blackhole{
     background:black;
-    color:white;
+    color:gold;
     border:3px solid gold;
 }
 
 #results{
-    margin-top:25px;
+    margin-top:30px;
     font-size:24px;
     font-weight:bold;
 }
@@ -116,21 +107,15 @@ body{
 </head>
 <body>
 
-banner.png
+<h1>TORCH THE STORCH</h1>
 
-<button id="startBtn">
-🔥 Press Here to Start a New Game 🔥
-</button>
-
-<audio id="music">
-<source src="rch.mp3
-</audio>
-
-<div id="status">
-Press Start Game
+<div id="instructions">
+Select a number, then click an empty circle.
 </div>
 
-<div id="numbers"></div>
+<div id="status">Your Turn</div>
+
+<div id="numberBank"></div>
 
 <div id="board"></div>
 
@@ -141,124 +126,120 @@ Press Start Game
 const ROWS = [1,2,3,4,5,6];
 
 let board = [];
-let selectedNumber = null;
+let positionMap = [];
+
 let playerNumbers = [];
 let computerNumbers = [];
-let gameActive = false;
-let positions = [];
+
+let selectedNumber = null;
+let gameOver = false;
 
 const boardDiv = document.getElementById("board");
-const numbersDiv = document.getElementById("numbers");
+const numberBankDiv = document.getElementById("numberBank");
 const statusDiv = document.getElementById("status");
 const resultsDiv = document.getElementById("results");
 
-buildPositionMap();
+initializeGame();
 
-document.getElementById("startBtn").addEventListener("click", () => {
+function initializeGame(){
 
-    const music = document.getElementById("music");
-
-    music.currentTime = 0;
-
-    music.play().catch(() => {});
-
-    startGame();
-
-});
-
-function startGame(){
-
-    gameActive = true;
+    playerNumbers = [1,2,3,4,5,6,7,8,9,10];
+    computerNumbers = [1,2,3,4,5,6,7,8,9,10];
 
     board = new Array(21).fill(null);
 
-    playerNumbers = [1,2,3,4,5,6,7,8,9,10];
-
-    computerNumbers = [1,2,3,4,5,6,7,8,9,10];
-
     selectedNumber = null;
+    gameOver = false;
 
-    resultsDiv.innerHTML = "";
-
-    createBoard();
-
-    renderNumbers();
+    createPositionMap();
+    buildBoard();
+    renderNumberBank();
 
     statusDiv.textContent =
     "Choose a number, then choose a circle.";
 
+    resultsDiv.innerHTML = "";
 }
 
-function createBoard(){
+function createPositionMap(){
+
+    let index = 0;
+
+    for(let row=0; row<6; row++){
+
+        for(let col=0; col<=row; col++){
+
+            positionMap[index] = {
+                row:row,
+                col:col
+            };
+
+            index++;
+        }
+    }
+}
+
+function buildBoard(){
 
     boardDiv.innerHTML = "";
 
     let index = 0;
 
-    for(let r=1;r<=6;r++){
+    for(let rowSize=1; rowSize<=6; rowSize++){
 
-        let row = document.createElement("div");
+        const row = document.createElement("div");
         row.className = "row";
 
-        for(let c=0;c<r;c++){
+        for(let col=0; col<rowSize; col++){
 
-            let cell = document.createElement("div");
+            const cell = document.createElement("div");
 
             cell.className = "cell";
-
             cell.dataset.index = index;
 
             cell.addEventListener("click", () => {
-
                 playerMove(index);
-
             });
 
             row.appendChild(cell);
 
             index++;
-
         }
 
         boardDiv.appendChild(row);
-
     }
-
 }
 
-function renderNumbers(){
+function renderNumberBank(){
 
-    numbersDiv.innerHTML = "";
+    numberBankDiv.innerHTML = "";
 
-    playerNumbers.forEach(num => {
+    playerNumbers.forEach(number => {
 
-        let btn = document.createElement("button");
+        const button = document.createElement("button");
 
-        btn.className = "numBtn";
+        button.className = "number";
+        button.textContent = number;
 
-        btn.textContent = num;
-
-        btn.onclick = () => {
+        button.onclick = () => {
 
             document
-            .querySelectorAll(".numBtn")
-            .forEach(b => b.classList.remove("selected"));
+            .querySelectorAll(".number")
+            .forEach(btn => btn.classList.remove("selected"));
 
-            btn.classList.add("selected");
+            button.classList.add("selected");
 
-            selectedNumber = num;
-
+            selectedNumber = number;
         };
 
-        numbersDiv.appendChild(btn);
+        numberBankDiv.appendChild(button);
 
     });
-
 }
 
 function playerMove(index){
 
-    if(!gameActive) return;
+    if(gameOver) return;
 
     if(selectedNumber === null) return;
 
@@ -274,161 +255,145 @@ function playerMove(index){
 
     selectedNumber = null;
 
-    updateBoard();
+    renderNumberBank();
+    drawBoard();
 
-    renderNumbers();
+    if(checkForGameEnd()) return;
 
-    if(checkForEnd()) return;
-
-    setTimeout(computerMove,300);
-
+    computerMove();
 }
 
 function computerMove(){
 
     if(computerNumbers.length === 0) return;
 
-    let empty = [];
+    let emptyCells = [];
 
-    board.forEach((spot,i)=>{
+    board.forEach((spot,index) => {
 
         if(spot === null){
-
-            empty.push(i);
-
+            emptyCells.push(index);
         }
 
     });
 
-    let randomSpace =
-    empty[Math.floor(Math.random()*empty.length)];
+    const randomCell =
+    emptyCells[Math.floor(Math.random()*emptyCells.length)];
 
-    let randomIndex =
+    const randomNumberIndex =
     Math.floor(Math.random()*computerNumbers.length);
 
-    let number =
-    computerNumbers[randomIndex];
+    const number =
+    computerNumbers[randomNumberIndex];
 
-    computerNumbers.splice(randomIndex,1);
+    computerNumbers.splice(randomNumberIndex,1);
 
-    board[randomSpace] = {
+    board[randomCell] = {
         owner:"computer",
         value:number
     };
 
-    updateBoard();
+    drawBoard();
 
-    checkForEnd();
-
+    checkForGameEnd();
 }
 
-function updateBoard(){
+function drawBoard(){
 
     const cells =
     document.querySelectorAll(".cell");
 
-    cells.forEach((cell,index)=>{
+    cells.forEach((cell,index) => {
 
         const spot = board[index];
 
         if(spot === null){
 
             cell.className = "cell";
-
             cell.textContent = "";
 
             return;
-
         }
 
         cell.textContent = spot.value;
 
         if(spot.owner === "player"){
-
             cell.className = "cell player";
-
         }else{
-
             cell.className = "cell computer";
-
         }
 
     });
-
 }
 
-function checkForEnd(){
+function checkForGameEnd(){
 
     const filled =
-    board.filter(x => x !== null).length;
+    board.filter(space => space !== null).length;
 
     if(filled < 20){
-
         return false;
-
     }
 
     endGame();
 
     return true;
-
 }
 
 function endGame(){
 
-    gameActive = false;
+    gameOver = true;
 
-    const blackHole =
-    board.findIndex(x => x === null);
+    const blackHoleIndex =
+    board.findIndex(space => space === null);
 
     const cells =
     document.querySelectorAll(".cell");
 
-    cells[blackHole].textContent = "BH";
-
-    cells[blackHole].className =
+    cells[blackHoleIndex].className =
     "cell blackhole";
 
+    cells[blackHoleIndex].textContent =
+    "BH";
+
     const neighbors =
-    getNeighbors(blackHole);
+    getNeighbors(blackHoleIndex);
 
     let playerLoss = 0;
-
     let computerLoss = 0;
 
-    neighbors.forEach(i => {
+    neighbors.forEach(index => {
 
-        const spot = board[i];
+        const spot = board[index];
 
         if(!spot) return;
 
         if(spot.owner === "player"){
-
             playerLoss += spot.value;
+        }
 
-        }else{
-
+        if(spot.owner === "computer"){
             computerLoss += spot.value;
-
         }
 
     });
 
-    let message = "";
+    let resultMessage = "";
 
     if(playerLoss < computerLoss){
 
-        message =
+        resultMessage =
         "🔥 YOU TORCHED THE STORCH! 🔥";
 
     }else if(playerLoss > computerLoss){
 
-        message =
+        resultMessage =
         "The Storch Survived!";
 
     }else{
 
-        message = "It's a Tie!";
+        resultMessage =
+        "It's a Tie!";
     }
 
     resultsDiv.innerHTML = `
@@ -437,43 +402,27 @@ function endGame(){
         <div>Player Loss: ${playerLoss}</div>
         <div>Computer Loss: ${computerLoss}</div>
         <br>
-        <div>${message}</div>
+        <div>${resultMessage}</div>
+        <br><br>
+        <button onclick="initializeGame()"
+                style="padding:12px 20px;font-size:18px;cursor:pointer;">
+            New Game
+        </button>
     `;
-}
-
-function buildPositionMap(){
-
-    let index = 0;
-
-    for(let r=0;r<6;r++){
-
-        for(let c=0;c<=r;c++){
-
-            positions[index] = {
-                row:r,
-                col:c
-            };
-
-            index++;
-
-        }
-
-    }
-
 }
 
 function getNeighbors(index){
 
-    const pos = positions[index];
+    const current = positionMap[index];
 
-    let neighbors = [];
+    const neighbors = [];
 
-    positions.forEach((p,i)=>{
+    positionMap.forEach((position,i) => {
 
-        let dr = p.row - pos.row;
-        let dc = p.col - pos.col;
+        const dr = position.row - current.row;
+        const dc = position.col - current.col;
 
-        let adjacent =
+        const adjacent =
 
             (dr === 0 && Math.abs(dc) === 1)
 
@@ -488,15 +437,12 @@ function getNeighbors(index){
             (dc === 0 || dc === 1));
 
         if(adjacent){
-
             neighbors.push(i);
-
         }
 
     });
 
     return neighbors;
-
 }
 
 </script>
