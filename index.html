@@ -192,22 +192,30 @@ function buildBoard(){
 
         for(let col=0; col<rowSize; col++){
 
+            const currentIndex = index;
+
             const cell = document.createElement("div");
 
             cell.className = "cell";
-            cell.dataset.index = index;
 
-            cell.addEventListener("click", () => {
-                playerMove(index);
+            cell.dataset.index = currentIndex;
+
+            cell.addEventListener("click", function(){
+
+                playerMove(currentIndex);
+
             });
 
             row.appendChild(cell);
 
             index++;
+
         }
 
         boardDiv.appendChild(row);
+
     }
+
 }
 
 function renderNumberBank(){
