@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scale Detective</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0f172a;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: gold;
+    margin-bottom: 5px;
+}
+
+.card {
+    background: white;
+    color: #111;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,.3);
+}
+
+.question {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    margin: 8px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+#feedback {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.correct {
+    background: #dcfce7;
+    color: #14532d;
+}
+
+.incorrect {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+#stats {
+    font-size: 1.1rem;
+    margin-top: 15px;
+}
+
+#nextBtn,
+#playAgain {
+    display: none;
+}
+
+#playAgain {
+    background: green;
+}
+</style>
+</head>
+<body>
+
+<h1>🔍 SCALE DETECTIVE 🔍</h1>
+<p>Can You Solve the Case?</p>
+
+<div class="card">
+    <div id="question" class="question"></div>
+
+    <div id="answers"></div>
+
+    <div id="feedback"></div>
+
+    <button id="nextBtn" onclick="nextQuestion()">Next Case ➜</button>
+</div>
+
+<div id="stats">
+    Score: <span id="score">0</span> |
+    Case: <span id="caseNum">1</span>/10
+</div>
+
+<button id="playAgain" onclick="startGame()">Play Again</button>
+
+<script>
+
+let score = 0;
+let currentCase = 0;
+let correctAnswer = "";
+let explanation = "";
+
+const questionEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const feedbackEl = document.getElementById("feedback");
+const nextBtn = document.getElementById("nextBtn");
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function generateQuestion() {
+
+    currentCase++;
+
+    document.getElementById("caseNum").textContent = currentCase;
+
+    feedbackEl.innerHTML = "";
+    feedbackEl.className = "";
+
+    nextBtn.style.display = "none";
+
+    answersEl.innerHTML = "";
+
+    let options = [];
+    const type = Math.floor(Math.random() * 4);
+
+    if (type === 0) {
+
+        const original = Math.floor(Math.random() * 8) + 2;
+        const scale = Math.floor(Math.random() * 4) + 2;
+        const copy = original * scale;
+
+        correctAnswer = scale.toString();
+
+        explanation =
+            `To find the scale factor, divide the copy by the original. ` +
+            `${copy} ÷ ${original} = ${scale}. ` +
+            `That means every side was multiplied by ${scale}.`;
+
+        questionEl.innerHTML = `
+            <strong>Case: Find the Scale Factor</strong><br><br>
+            Original Side Length = ${original}<br>
+            Copy Side Length = ${copy}<br><br>
+            What is the scale factor?
+        `;
+
+        options = [scale, scale + 1, Math.max(2, scale - 1), scale + 2];
+
+    }
+
+    else if (type === 1) {
+
+        const side = Math.floor(Math.random() * 10) + 2;
+        const scale = Math.floor(Math.random() * 4) + 2;
+        const answer = side * scale;
+
+        correctAnswer = answer.toString();
+
+        explanation =
+            `To find the side length in the scaled copy, multiply by the scale factor. ` +
+            `${side} × ${scale} = ${answer}.`;
+
+        questionEl.innerHTML = `
+            <strong>Case: Missing Side Length</strong><br><br>
+            Original Side = ${side}<br>
+            Scale Factor = ${scale}<br><br>
+            What is the new side length?
+        `;
+
+        options = [answer, answer + scale, answer - scale, answer + 3];
+
+    }
+
+    else if (type === 2) {
+
+        let scaled = Math.random() < 0.5;
+
+        const a = Math.floor(Math.random() * 6) + 2;
+        const b = Math.floor(Math.random() * 6) + 2;
+        const scale = Math.floor(Math.random() * 4) + 2;
+
+        if (scaled) {
+
+            correctAnswer = "Scaled Copy";
+
+            explanation =
+                `Both dimensions were multiplied by ${scale}. ` +
+                `Since the same scale factor was used for every side, this is a scaled copy.`;
+
+            questionEl.innerHTML = `
+                <strong>Case: Scaled Copy or Not?</strong><br><br>
+                Original: ${a} × ${b}<br>
+                Copy: ${a * scale} × ${b * scale}<br><br>
+                Is this a scaled copy?
+            `;
+
+        } else {
+
+            correctAnswer = "Not a Scaled Copy";
+
+            explanation =
+                `One side was multiplied by ${scale}, but the other side was not multiplied by the same amount. ` +
+                `Since the scale factor is not consistent, this is NOT a scaled copy.`;
+
+            questionEl.innerHTML = `
+                <strong>Case: Scaled Copy or Not?</strong><br><br>
+                Original: ${a} × ${b}<br>
+                Copy: ${a * scale} × ${(b * scale) + 1}<br><br>
+                Is this a scaled copy?
+            `;
+        }
+
+        options = ["Scaled Copy", "Not a Scaled Copy"];
+
+    }
+
+    else {
+
+        const choices = [10, 15, 20, 25, 30, 35, 40];
+        const actual = choices[Math.floor(Math.random() * choices.length)];
+        const answer = actual / 5;
+
+        correctAnswer = answer.toString();
+
+        explanation =
+            `The scale says 1 inch represents 5 feet. ` +
+            `To find the drawing length, divide by 5. ` +
+            `${actual} ÷ 5 = ${answer} inches.`;
+
+        questionEl.innerHTML = `
+            <strong>Case: Scale Drawing</strong><br><br>
+            Scale: 1 inch = 5 feet<br><br>
+            A wall is ${actual} feet long.<br><br>
+            How many inches should it be in the drawing?
+        `;
+
+        options = [answer, answer + 1, answer - 1, answer + 2];
+
+    }
+
+    options = [...new Set(options)];
+
+    while (options.length < 4) {
+        options.push(options.length + 10);
+    }
+
+    shuffle(options);
+
+    options.forEach(choice => {
+
+        const btn = document.createElement("button");
+        btn.textContent = choice;
+
+        btn.onclick = () => checkAnswer(choice.toString());
+
+        answersEl.appendChild(btn);
+
+    });
+}
+
+function checkAnswer(answer) {
+
+    document.querySelectorAll("#answers button")
+        .forEach(btn => btn.disabled = true);
+
+    if (answer === correctAnswer) {
+
+        score += 10;
+
+        feedbackEl.className = "correct";
+
+        feedbackEl.innerHTML = `
+            <strong>✅ Correct!</strong><br><br>
+            ${explanation}
+        `;
+
+    } else {
+
+        feedbackEl.className = "incorrect";
+
+        feedbackEl.innerHTML = `
+            <strong>❌ Incorrect.</strong><br><br>
+            Correct Answer: <b>${correctAnswer}</b><br><br>
+            ${explanation}
+        `;
+    }
+
+    document.getElementById("score").textContent = score;
+
+    nextBtn.style.display = "inline-block";
+}
+
+function nextQuestion() {
+
+    if (currentCase >= 10) {
+        endGame();
+    } else {
+        generateQuestion();
+    }
+
+}
+
+function endGame() {
+
+    let title = "";
+
+    if (score === 100) {
+        title = "🏆 Scale Detective Supreme!";
+    } else if (score >= 80) {
+        title = "⭐ Master Detective!";
+    } else if (score >= 50) {
+        title = "🕵️ Junior Detective!";
+    } else {
+        title = "📖 Rookie Detective!";
+    }
+
+    questionEl.innerHTML = `
+        <h2>Case Closed!</h2>
+        <p>Final Score: <strong>${score}</strong></p>
+        <h3>${title}</h3>
+    `;
+
+    answersEl.innerHTML = "";
+    feedbackEl.innerHTML = "";
+
+    nextBtn.style.display = "none";
+    document.getElementById("playAgain").style.display = "inline-block";
+}
+
+function startGame() {
+
+    score = 0;
+    currentCase = 0;
+
+    document.getElementById("score").textContent = "0";
+    document.getElementById("caseNum").textContent = "1";
+    document.getElementById("playAgain").style.display = "none";
+
+    generateQuestion();
+}
+
+startGame();
+
+</script>
+
+</body>
+</html>
