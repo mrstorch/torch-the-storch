@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. Storch's 10-Sided Die</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding-top: 100px;
+        }
 
+        h1 {
+            color: #333;
+        }
+
+        #result {
+            font-size: 80px;
+            font-weight: bold;
+            color: #0078d4;
+            margin: 30px 0;
+        }
+
+        button {
+            font-size: 24px;
+            padding: 15px 30px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            background-color: #0078d4;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #005ea6;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎲 Mr. Storch's 10-Sided Die</h1>
+
+    <div id="result">-</div>
+
+    <button onclick="rollDie()">Roll d10</button>
+
+    <script>
+        function rollDie() {
+            const roll = Math.floor(Math.random() * 10) + 1;
+            document.getElementById("result").textContent = roll;
+        }
+    </script>
+
+</body>
+</html>
