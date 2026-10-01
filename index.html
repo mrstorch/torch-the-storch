@@ -1,76 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Torch the Storch!</title>
 
 <style>
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
     background:#111;
     color:white;
+    font-family:Arial,sans-serif;
     text-align:center;
+    margin:0;
 }
 
 #banner{
     width:100%;
-    max-width:1000px;
+    max-width:1200px;
     display:block;
     margin:auto;
 }
 
-#controls{
-    margin:15px;
-}
-
-button{
-    padding:10px 20px;
-    font-size:18px;
+#newGameBtn{
+    margin:20px;
+    padding:15px 30px;
+    font-size:24px;
+    font-weight:bold;
     cursor:pointer;
 }
 
+#directions{
+    max-width:700px;
+    margin:20px auto;
+    text-align:left;
+    background:#222;
+    padding:15px 25px;
+    border-radius:10px;
+    border:2px solid orange;
+}
+
 #numbers{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:8px;
     margin:20px;
 }
 
 .number{
-    width:50px;
-    height:50px;
+    width:55px;
+    height:55px;
+    margin:5px;
+    border:none;
     border-radius:50%;
-    background:#008cff;
+    background:dodgerblue;
     color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
     font-size:22px;
     font-weight:bold;
+    cursor:pointer;
 }
 
-.number.selected{
+.selected{
     outline:4px solid yellow;
 }
 
 #board{
-    position:relative;
-    width:700px;
-    height:520px;
-    margin:auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    margin:30px 0;
+}
+
+.row{
+    display:flex;
+    gap:8px;
 }
 
 .circle{
-    position:absolute;
     width:60px;
     height:60px;
     border-radius:50%;
+    border:3px solid orange;
     background:#333;
-    border:3px solid #ff4400;
     color:white;
     font-size:22px;
     font-weight:bold;
@@ -81,22 +88,23 @@ button{
 }
 
 .player{
-    background:#008cff;
+    background:dodgerblue;
 }
 
 .computer{
-    background:#ff5500;
+    background:orangered;
 }
 
 .blackhole{
     background:black;
     border:4px solid red;
-    box-shadow:0 0 25px red;
+    box-shadow:0 0 20px red;
 }
 
 #status{
-    margin:15px;
-    font-size:20px;
+    font-size:24px;
+    margin:20px;
+    font-weight:bold;
 }
 </style>
 </head>
@@ -105,310 +113,308 @@ button{
 
 banner.png
 
-<div id="controls">
-    <button onclick="newGame()">🔥 NEW GAME 🔥</button>
+<button id="newGameBtn" onclick="newGame()">
+🔥 Press Here to Start a New Game 🔥
+</button>
+
+<div id="directions">
+<h2>How to Play 🔥</h2>
+
+<ol>
+<li>Pick a number.</li>
+<li>Place it on an empty circle.</li>
+<li>The computer takes a turn.</li>
+<li>Keep playing until only one circle is empty.</li>
+<li>That circle becomes the <strong>Black Hole</strong> and swallows the numbers around it.</li>
+<li>The player who loses the <strong>fewest points</strong> wins!</li>
+</ol>
+
+<p>
+🔥 <strong>Lose fewer points than the computer and YOU TORCH THE STORCH!</strong> 🔥
+</p>
 </div>
 
-<div id="status">
-Select a number.
-</div>
+<div id="status"></div>
 
 <div id="numbers"></div>
 
 <div id="board"></div>
 
-<audio id="bgMusic">
-    Torch-the-Storch.mp3
+<audio id="music">
+Torch-the-Storch.mp3
 </audio>
 
 <script>
 
-let musicStarted = false;
-
+let musicPlayed = false;
 let selectedNumber = null;
 
 let playerNumbers = [];
 let computerNumbers = [];
-
 let board = [];
 
+const numbersDiv = document.getElementById("numbers");
 const boardDiv = document.getElementById("board");
-const numberDiv = document.getElementById("numbers");
 
-const positions = [];
+const rows = [
+ [0],
+ [1,2],
+ [3,4,5],
+ [6,7,8,9],
+ [10,11,12,13,14],
+ [15,16,17,18,19,20]
+];
 
-let id = 0;
+function newGame(){
 
-for(let row=0; row<6; row++){
-
-    let count = row + 1;
-
-    let y = row * 75;
-
-    let startX = 320 - row * 38;
-
-    for(let col=0; col<count; col++){
-
-        positions.push({
-            id:id++,
-            row:row,
-            col:col,
-            x:startX + col*76,
-            y:y
-        });
-
+    if(!musicPlayed){
+        document.getElementById("music").play().catch(()=>{});
+        musicPlayed = true;
     }
+
+    playerNumbers = [1,2,3,4,5,6,7,8,9,10];
+    computerNumbers = [1,2,3,4,5,6,7,8,9,10];
+
+    selectedNumber = null;
+
+    board = [];
+
+    for(let i=0;i<21;i++){
+        board.push({
+            value:null,
+            owner:null
+        });
+    }
+
+    createNumberButtons();
+    createBoard();
+
+    document.getElementById("status").innerHTML = "";
+}
+
+function createNumberButtons(){
+
+    numbersDiv.innerHTML = "";
+
+    playerNumbers.forEach(num=>{
+
+        const btn = document.createElement("button");
+
+        btn.className = "number";
+        btn.textContent = num;
+
+        btn.onclick = function(){
+
+            selectedNumber = num;
+
+            document
+                .querySelectorAll(".number")
+                .forEach(b=>b.classList.remove("selected"));
+
+            btn.classList.add("selected");
+        };
+
+        numbersDiv.appendChild(btn);
+
+    });
 }
 
 function createBoard(){
 
-    boardDiv.innerHTML="";
+    boardDiv.innerHTML = "";
 
-    board=[];
+    let index = 0;
 
-    positions.forEach(pos=>{
+    for(let r=0;r<6;r++){
 
-        const c=document.createElement("div");
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "row";
 
-        c.className="circle";
+        for(let c=0;c<=r;c++){
 
-        c.style.left=pos.x+"px";
-        c.style.top=pos.y+"px";
+            const circle = document.createElement("div");
 
-        c.dataset.id=pos.id;
+            circle.className = "circle";
+            circle.dataset.index = index;
 
-        c.onclick=()=>playerPlace(pos.id);
+            circle.onclick = function(){
+                playerMove(index);
+            };
 
-        boardDiv.appendChild(c);
+            rowDiv.appendChild(circle);
 
-        board.push({
-            value:null,
-            owner:null,
-            element:c
-        });
+            index++;
+        }
 
-    });
-
+        boardDiv.appendChild(rowDiv);
+    }
 }
 
-function createNumbers(){
+function playerMove(index){
 
-    numberDiv.innerHTML="";
+    if(selectedNumber === null) return;
 
-    playerNumbers=[1,2,3,4,5,6,7,8,9,10];
+    if(board[index].value !== null) return;
 
-    playerNumbers.forEach(n=>{
+    board[index].value = selectedNumber;
+    board[index].owner = "player";
 
-        const d=document.createElement("div");
+    playerNumbers =
+        playerNumbers.filter(n => n !== selectedNumber);
 
-        d.className="number";
+    selectedNumber = null;
 
-        d.textContent=n;
-
-        d.onclick=()=>selectNumber(n,d);
-
-        numberDiv.appendChild(d);
-
-    });
-
-}
-
-function selectNumber(num,element){
-
-    if(!playerNumbers.includes(num)) return;
-
-    document.querySelectorAll(".number").forEach(x=>{
-        x.classList.remove("selected");
-    });
-
-    element.classList.add("selected");
-
-    selectedNumber=num;
-
-}
-
-function playerPlace(space){
-
-    if(selectedNumber===null) return;
-
-    if(board[space].value!==null) return;
-
-    board[space].value=selectedNumber;
-    board[space].owner="player";
-
-    board[space].element.textContent=selectedNumber;
-    board[space].element.classList.add("player");
-
-    playerNumbers=playerNumbers.filter(x=>x!==selectedNumber);
-
-    selectedNumber=null;
-
-    createRemainingNumbers();
+    drawBoard();
+    createNumberButtons();
 
     computerMove();
 
     checkEndGame();
-
-}
-
-function createRemainingNumbers(){
-
-    numberDiv.innerHTML="";
-
-    playerNumbers.forEach(n=>{
-
-        const d=document.createElement("div");
-
-        d.className="number";
-        d.textContent=n;
-
-        d.onclick=()=>selectNumber(n,d);
-
-        numberDiv.appendChild(d);
-
-    });
-
 }
 
 function computerMove(){
 
-    if(computerNumbers.length===0) return;
+    if(computerNumbers.length === 0) return;
 
-    const num =
-        computerNumbers[Math.floor(Math.random()*computerNumbers.length)];
-
-    let open=[];
+    let openSpots = [];
 
     board.forEach((spot,index)=>{
-        if(spot.value===null) open.push(index);
+        if(spot.value === null){
+            openSpots.push(index);
+        }
     });
 
-    const selectedSpace=
-        open[Math.floor(Math.random()*open.length)];
+    const spot =
+        openSpots[Math.floor(Math.random()*openSpots.length)];
 
-    board[selectedSpace].value=num;
-    board[selectedSpace].owner="computer";
+    const number =
+        computerNumbers[Math.floor(Math.random()*computerNumbers.length)];
 
-    board[selectedSpace].element.textContent=num;
-    board[selectedSpace].element.classList.add("computer");
+    board[spot].value = number;
+    board[spot].owner = "computer";
 
-    computerNumbers=
-        computerNumbers.filter(x=>x!==num);
+    computerNumbers =
+        computerNumbers.filter(n => n !== number);
 
+    drawBoard();
 }
 
-function newGame(){
+function drawBoard(){
 
-    if(!musicStarted){
+    const circles = document.querySelectorAll(".circle");
 
-        document.getElementById("bgMusic")
-        .play()
-        .catch(()=>{});
+    circles.forEach((circle,index)=>{
 
-        musicStarted=true;
-    }
+        circle.className = "circle";
+        circle.textContent = "";
 
-    computerNumbers=[1,2,3,4,5,6,7,8,9,10];
+        if(board[index].value !== null){
 
-    selectedNumber=null;
+            circle.textContent = board[index].value;
 
-    createBoard();
-    createNumbers();
+            if(board[index].owner === "player"){
+                circle.classList.add("player");
+            }
 
-    document.getElementById("status").textContent=
-    "Select a number.";
-
+            if(board[index].owner === "computer"){
+                circle.classList.add("computer");
+            }
+        }
+    });
 }
 
 function getNeighbors(index){
 
-    const p = positions[index];
+    let row,col;
 
-    let result=[];
+    for(let r=0;r<rows.length;r++){
 
-    positions.forEach(other=>{
+        const c = rows[r].indexOf(index);
 
-        if(other.id===p.id) return;
-
-        const rowDiff=other.row-p.row;
-        const colDiff=other.col-p.col;
-
-        if(
-            (rowDiff===0 && Math.abs(colDiff)===1) ||
-            (rowDiff===-1 && (colDiff===0 || colDiff===-1)) ||
-            (rowDiff===1 && (colDiff===0 || colDiff===1))
-        ){
-            result.push(other.id);
+        if(c !== -1){
+            row = r;
+            col = c;
+            break;
         }
+    }
 
-    });
+    const neighbors = [];
 
-    return result;
+    function add(r,c){
 
+        if(r < 0 || r >= rows.length) return;
+        if(c < 0 || c >= rows[r].length) return;
+
+        neighbors.push(rows[r][c]);
+    }
+
+    add(row,col-1);
+    add(row,col+1);
+
+    add(row-1,col-1);
+    add(row-1,col);
+
+    add(row+1,col);
+    add(row+1,col+1);
+
+    return neighbors;
 }
 
 function checkEndGame(){
 
-    let filled=
-    board.filter(x=>x.value!==null).length;
+    const filled =
+        board.filter(s=>s.value!==null).length;
 
-    if(filled!==20) return;
+    if(filled !== 20) return;
 
-    let blackHole=
-    board.findIndex(x=>x.value===null);
+    const blackHole =
+        board.findIndex(s=>s.value===null);
 
-    board[blackHole].element.classList.add("blackhole");
+    const circles =
+        document.querySelectorAll(".circle");
 
-    const neighbors=
-    getNeighbors(blackHole);
+    circles[blackHole].classList.add("blackhole");
 
-    let playerLoss=0;
-    let computerLoss=0;
+    const neighbors =
+        getNeighbors(blackHole);
+
+    let playerLoss = 0;
+    let computerLoss = 0;
 
     neighbors.forEach(i=>{
 
-        const spot=board[i];
-
-        if(spot.owner==="player"){
-            playerLoss+=spot.value;
+        if(board[i].owner==="player"){
+            playerLoss += board[i].value;
         }
 
-        if(spot.owner==="computer"){
-            computerLoss+=spot.value;
+        if(board[i].owner==="computer"){
+            computerLoss += board[i].value;
         }
-
-        spot.element.style.opacity="0.4";
-
     });
 
-    const status=
-    document.getElementById("status");
+    if(playerLoss < computerLoss){
 
-    if(playerLoss<computerLoss){
+        document.getElementById("status").innerHTML =
+        "🔥 YOU TORCHED THE STORCH! 🔥<br>" +
+        "You lost " + playerLoss +
+        " points. Computer lost " +
+        computerLoss + " points.";
 
-        status.innerHTML=
-        `🔥 YOU TORCHED THE STORCH! 🔥<br>
-         Your Loss: ${playerLoss}<br>
-         Computer Loss: ${computerLoss}`;
+    } else if(playerLoss > computerLoss){
 
-    }else if(playerLoss>computerLoss){
+        document.getElementById("status").innerHTML =
+        "Computer Wins!<br>" +
+        "You lost " + playerLoss +
+        " points. Computer lost " +
+        computerLoss + " points.";
 
-        status.innerHTML=
-        `Computer Wins!<br>
-         Your Loss: ${playerLoss}<br>
-         Computer Loss: ${computerLoss}`;
+    } else {
 
-    }else{
-
-        status.innerHTML=
-        `Tie Game!<br>
-         Both Lost ${playerLoss}`;
-
+        document.getElementById("status").innerHTML =
+        "It's a Tie! Both players lost " +
+        playerLoss + " points.";
     }
-
 }
-
-newGame();
 
 </script>
 
