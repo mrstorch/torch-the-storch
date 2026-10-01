@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Torch the Storch</title>
+
+<button onclick="playMusic()">▶ Play Music</button>
+
+<h1>TORCH THE STORCH</h1>
 
 <style>
 body{
@@ -451,6 +454,11 @@ function getNeighbors(index){
     });
 
     return neighbors;
+}
+
+function playMusic(){
+    const music = new Audio("Torch-the-Storch.mp3");
+    music.play();
 }
 
 </script>
